@@ -5,3 +5,5 @@
 <a href='https://github.com/rh442/Capstone-LostAndFound/blob/main/Instructions/Project%20Requirements.pdf' target='_blank'>Project Requirements</a>
 <br/>
 <a href='https://github.com/rh442/Capstone-LostAndFound/blob/main/Instructions/Project%20Update%20Guidelines.pdf' target='_blank'>Weekly Presentation Requirements</a>
+
+<h2>Milestones</h2>
