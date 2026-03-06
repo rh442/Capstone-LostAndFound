@@ -1,4 +1,6 @@
 <h1>Capstone- Lost and Found Project</h1>
+<p>by Jason Shan, Mustafa Kurt, and Raymond Huang<p>
+<br/>
 <p>An Lost and found app made for organizations to better help the return of Lost items to their owners. </p>
 
 <h2>Instructions</h2>
