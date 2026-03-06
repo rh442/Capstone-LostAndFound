@@ -10,4 +10,4 @@
 
 |Week#|Goal|Accomplished|
 |-----|----|----|
-|1|Github Setup and Role Division|TBA|
+|<a href='https://cuny620-my.sharepoint.com/:p:/g/personal/raymond_huang70_myhunter_cuny_edu/IQBg71lJ6p1RR5FRrlFN2Pw0AQ9rekMiKHYjQJOYXve5LE0?e=2mqq5r' target='_blank'>1</a>|Github Setup and Role Division|TBA|
