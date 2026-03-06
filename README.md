@@ -7,3 +7,6 @@
 <a href='https://github.com/rh442/Capstone-LostAndFound/blob/main/Instructions/Project%20Update%20Guidelines.pdf' target='_blank'>Weekly Presentation Requirements</a>
 
 <h2>Milestones</h2>
+|Week#|Goal|Accomplished|
+|-----|----|----|
+|1|Github Setup and Role Division|TBA|
