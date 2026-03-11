@@ -1,0 +1,60 @@
+.student-reports {
+  flex: 1;
+  padding: 32px;
+}
+
+.student-reports__header {
+  margin-bottom: 24px;
+}
+
+.student-reports__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.student-reports__filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.student-reports__filter-btn {
+  background: white;
+  color: #111111;
+  border: 1px solid #d1d5db;
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.student-reports__filter-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.student-reports__search {
+  width: 280px;
+  max-width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 15px;
+}
+
+.student-reports__table {
+  overflow: hidden;
+}
+
+.student-reports__empty {
+  text-align: center;
+  padding: 28px;
+  color: var(--muted);
+  font-size: 15px;
+}

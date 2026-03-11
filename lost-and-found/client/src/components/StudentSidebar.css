@@ -1,0 +1,66 @@
+.student-sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: var(--primary);
+  color: white;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.student-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 34px;
+}
+
+.student-sidebar__logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: white;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.student-sidebar__text {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.student-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.student-sidebar__link {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.student-sidebar__link--active {
+  background: white;
+  color: #111111;
+  font-weight: 700;
+}
+
+.student-sidebar__logout {
+  background: transparent;
+  color: #ffd7d7;
+  border: none;
+  text-align: left;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 600;
+}

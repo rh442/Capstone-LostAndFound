@@ -1,0 +1,135 @@
+.info-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.info-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 30px;
+}
+
+.info-main {
+  flex: 1;
+  padding: 48px 56px 64px;
+}
+
+.info-hero {
+  max-width: 900px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.info-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  background: rgba(111, 45, 189, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(111, 45, 189, 0.18);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.info-title {
+  margin: 0 0 14px;
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.info-subtitle {
+  margin: 0 auto;
+  max-width: 760px;
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.info-content-card {
+  max-width: 1040px;
+  margin: 0 auto 26px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 30px;
+}
+
+.info-content-card h2 {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.info-content-card p {
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.info-content-card p:last-child {
+  margin-bottom: 0;
+}
+
+.info-grid {
+  max-width: 1040px;
+  margin: 0 auto 26px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.info-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.info-box h3 {
+  margin: 0 0 12px;
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.info-box p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+@media (max-width: 950px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .info-main {
+    padding: 32px 20px 48px;
+  }
+
+  .info-title {
+    font-size: 40px;
+  }
+
+  .info-subtitle {
+    font-size: 17px;
+  }
+
+  .info-content-card h2 {
+    font-size: 26px;
+  }
+}

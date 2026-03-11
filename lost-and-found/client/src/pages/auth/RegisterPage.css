@@ -1,0 +1,57 @@
+.register-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 36px;
+}
+
+.register-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 44px;
+  font-weight: 800;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.register-submit {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.register-small-text {
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+  color: #444;
+}
+
+.register-text-link {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

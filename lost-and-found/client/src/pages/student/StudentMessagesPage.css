@@ -1,0 +1,149 @@
+.student-messages {
+  flex: 1;
+  padding: 32px;
+}
+
+.student-messages__layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 22px;
+  min-height: 82vh;
+}
+
+.student-messages__left {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.student-messages__left-header {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.student-messages__conversation {
+  width: 100%;
+  border: none;
+  background: white;
+  padding: 20px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+}
+
+.student-messages__conversation.active {
+  background: #f8f5ff;
+  border-left: 4px solid var(--primary);
+}
+
+.student-messages__conversation-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.student-messages__conversation-top strong {
+  font-size: 18px;
+}
+
+.student-messages__conversation-top span {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.student-messages__conversation p {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 12px;
+  margin-bottom: 0;
+  line-height: 1.45;
+}
+
+.student-messages__right {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.student-messages__header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.student-messages__header h2 {
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.student-messages__badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.student-messages__thread {
+  flex: 1;
+  padding: 24px;
+  background: #fcfcfd;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 420px;
+}
+
+.student-messages__message-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-messages__message-wrap.admin {
+  align-items: flex-start;
+}
+
+.student-messages__message-wrap.user {
+  align-items: flex-end;
+}
+
+.student-messages__bubble {
+  max-width: 72%;
+  padding: 16px 18px;
+  border-radius: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.student-messages__bubble.admin {
+  background: #f0f0f0;
+  color: #111111;
+}
+
+.student-messages__bubble.user {
+  background: var(--primary);
+  color: white;
+}
+
+.student-messages__time {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.student-messages__input-row {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  border-top: 1px solid var(--border);
+  background: white;
+}
+
+.student-messages__input {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
