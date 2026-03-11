@@ -20,7 +20,7 @@ export default function RegisterPage() {
     }));
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (
@@ -38,17 +38,51 @@ export default function RegisterPage() {
       return;
     }
 
-    alert("Registered successfully.");
-    navigate("/login");
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.fullName,
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Registration failed.");
+        return;
+      }
+
+      // Save token and user
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data));
+
+      alert("Registered successfully!");
+
+      // redirect after register
+      navigate("/login");
+
+    } catch (error) {
+      console.error("Register error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
     <div className="auth-page">
       <header className="auth-header">
-          <Link to="/" className="brand">
-            <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
-            <span className="brand-text">Lost & Found</span>
-          </Link>
+        <Link to="/" className="brand">
+          <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
+          <span className="brand-text">Lost & Found</span>
+        </Link>
 
         <div className="top-nav">
           <Link to="/" className="top-nav-link">Home</Link>
@@ -62,6 +96,7 @@ export default function RegisterPage() {
           <h1 className="register-title">REGISTER</h1>
 
           <form onSubmit={handleRegister} className="register-form">
+
             <div>
               <label className="register-label">FULL NAME</label>
               <input
@@ -105,11 +140,17 @@ export default function RegisterPage() {
               />
             </div>
 
-            <button type="submit" className="primary-btn register-submit">REGISTER</button>
+            <button type="submit" className="primary-btn register-submit">
+              REGISTER
+            </button>
 
             <p className="register-small-text">
-              Already have an account? <Link to="/login" className="register-text-link">Login</Link>
+              Already have an account?{" "}
+              <Link to="/login" className="register-text-link">
+                Login
+              </Link>
             </p>
+
           </form>
         </div>
       </main>
