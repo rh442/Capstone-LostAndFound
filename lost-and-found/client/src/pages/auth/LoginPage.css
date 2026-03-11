@@ -1,0 +1,79 @@
+.login-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 36px;
+}
+
+.login-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 44px;
+  font-weight: 800;
+}
+
+.login-role-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.login-role-btn {
+  flex: 1;
+  padding: 12px;
+  background: #ececec;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.login-role-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  font-weight: 700;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.login-submit {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.login-small-text {
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+  color: #444;
+}
+
+.login-text-link {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
