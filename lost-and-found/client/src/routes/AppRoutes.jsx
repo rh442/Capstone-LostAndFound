@@ -6,6 +6,7 @@ import StudentDashboard from "../pages/student/StudentDashboard";
 import StudentLostItemForm from "../pages/student/StudentLostItemForm";
 import StudentReportsPage from "../pages/student/StudentReportsPage";
 import StudentMessagesPage from "../pages/student/StudentMessagesPage";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 import AboutPage from "../pages/public/AboutPage";
 import ContactPage from "../pages/public/ContactPage";
 import PrivacyPage from "../pages/public/PrivacyPage";
@@ -26,6 +27,7 @@ export default function AppRoutes() {
         <Route path="/student-reports" element={<StudentReportsPage />} />
         <Route path="/student-messages" element={<StudentMessagesPage />} />
         <Route path="/admin-requests" element={<AdminRequestsPage />} />
+        <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />

@@ -18,7 +18,7 @@ export default function LoginPage() {
     }
 
     if (role === "admin") {
-      navigate("/admin-requests");
+      navigate("/admin-dashboard");
     } else {
       navigate("/student-dashboard");
     }
