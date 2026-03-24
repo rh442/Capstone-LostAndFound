@@ -45,9 +45,9 @@ export default function AdminAddItemPage() {
 
       <main className="admin-form-page">
         <div className="admin-form-page__card card-surface">
-          <h1 className="admin-form-page__title">New ITEM FORM</h1>
+          <h1 className="admin-form-page__title">New Item Form</h1>
           <p className="admin-form-page__subtitle">
-            Submit the details of your found item
+            Submit the details of the item
           </p>
 
           <form onSubmit={handleSubmit} className="admin-form-page__form">
