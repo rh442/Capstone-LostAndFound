@@ -8,9 +8,9 @@
 
     const links = [
       { label: "Dashboard", path: "/admin-dashboard" },
-      { label: "Messages", path: "/admin-messages" },
-      { label: "Add item", path: "/add-item" },
-      { label: "Overview", path: "/student-reports" },
+      { label: "Messages", path: "/admin-message" },
+      { label: "Add item", path: "/admin-add" },
+      { label: "Overview", path: "/" },
     
     ];
 
