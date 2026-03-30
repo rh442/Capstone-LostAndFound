@@ -10,7 +10,7 @@
       { label: "Dashboard", path: "/admin-dashboard" },
       { label: "Messages", path: "/admin-message" },
       { label: "Add item", path: "/admin-add" },
-      { label: "Overview", path: "/" },
+      { label: "Overview", path: "/admin-overview" },
     
     ];
 
