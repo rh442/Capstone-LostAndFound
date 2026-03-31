@@ -1,0 +1,99 @@
+.admin-reports {
+  flex: 1;
+  padding: 32px;
+}
+
+.admin-reports__header {
+  margin-bottom: 24px;
+}
+
+.admin-reports__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.admin-reports__filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-reports__filter-btn {
+  background: white;
+  color: #111111;
+  border: 1px solid #d1d5db;
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.admin-reports__filter-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.admin-reports__search {
+  width: 280px;
+  max-width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 15px;
+}
+
+.admin-reports__table {
+  overflow: hidden;
+}
+
+.admin-reports__empty {
+  text-align: center;
+  padding: 28px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.Chat_button:hover{
+    cursor: pointer;
+}
+.Details_button:hover{
+    cursor: pointer;
+}
+.modal {
+  display: none;             /* hidden by default */
+  position: fixed;           /* so it floats above everything */
+  z-index: 9999;             /* high enough to be on top */
+  width: 80%;
+  height: 80%;
+  background-color: purple;  /* visible background */
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* center it */
+}
+
+.modal.active {
+  display: flex;             /* make it visible */
+    
+  justify-content: center;   /* center content horizontally */
+}
+.modal-close {
+  position: absolute;   /* float it over the modal */
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #ffcccc;
+}

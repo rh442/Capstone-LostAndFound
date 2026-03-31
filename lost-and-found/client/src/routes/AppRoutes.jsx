@@ -12,6 +12,7 @@ import ContactPage from "../pages/public/ContactPage";
 import PrivacyPage from "../pages/public/PrivacyPage";
 import AdminMessagesPage from "../pages/admin/AdminMessagesPage";
 import AdminAddItemPage from '../pages/admin/AdminAddItemPage'
+import AdminOverview from "../pages/admin/AdminOverview";
 
 function AdminRequestsPage() {
   return <h1 style={{ padding: "40px" }}>Admin Requests Page</h1>;
@@ -34,6 +35,7 @@ export default function AppRoutes() {
         <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
         <Route path='/admin-message' element={<AdminMessagesPage/>}/>
         <Route path='/admin-add' element={<AdminAddItemPage/>}/>
+        <Route path="/admin-overview" element={<AdminOverview/>}/>
 
         <Route path="/about" element={<AboutPage />}/>
         <Route path="/contact" element={<ContactPage />} />
