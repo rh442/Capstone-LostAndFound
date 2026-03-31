@@ -9,20 +9,31 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       alert("Please enter email and password");
       return;
     }
-
-    if (role === "admin") {
-      navigate("/admin-dashboard");
-    } else {
-      navigate("/student-dashboard");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      alert(error.message);
+      return;
     }
+    // for now it sends everyone to student dashboard
+    navigate("/student-dashboard");
+
+    // if (role === "admin") {
+    //   navigate("/admin-dashboard");
+    // } else {
+    //   navigate("/student-dashboard");
+    // }
+
   };
+
 
   return (
     <div className="auth-page">

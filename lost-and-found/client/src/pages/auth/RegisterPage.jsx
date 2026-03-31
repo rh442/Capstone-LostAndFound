@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./RegisterPage.css";
+import { supabase } from "../../libs/supabaseClient";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function RegisterPage() {
     }));
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (
@@ -38,22 +39,51 @@ export default function RegisterPage() {
       return;
     }
 
-    alert("Registered successfully.");
-    navigate("/login");
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: formData.fullName,
+          role: "student",
+        },
+      },
+    });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    // If email confirmations are enabled, Supabase creates the user but no session yet.
+    if (data.user && !data.session) {
+      alert("Check your email to confirm your account, then log in.");
+      navigate("/login");
+      return;
+    }
+
+    // If confirmations are disabled, you may already be logged in.
+    navigate("/student-dashboard");
   };
 
   return (
     <div className="auth-page">
       <header className="auth-header">
-          <Link to="/" className="brand">
-            <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
-            <span className="brand-text">Lost & Found</span>
-          </Link>
+        <Link to="/" className="brand">
+          <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
+          <span className="brand-text">Lost & Found</span>
+        </Link>
 
         <div className="top-nav">
-          <Link to="/" className="top-nav-link">Home</Link>
-          <Link to="/login" className="top-nav-link">Login</Link>
-          <Link to="/register" className="top-nav-link">Register</Link>
+          <Link to="/" className="top-nav-link">
+            Home
+          </Link>
+          <Link to="/login" className="top-nav-link">
+            Login
+          </Link>
+          <Link to="/register" className="top-nav-link">
+            Register
+          </Link>
         </div>
       </header>
 
@@ -105,10 +135,15 @@ export default function RegisterPage() {
               />
             </div>
 
-            <button type="submit" className="primary-btn register-submit">REGISTER</button>
+            <button type="submit" className="primary-btn register-submit">
+              REGISTER
+            </button>
 
             <p className="register-small-text">
-              Already have an account? <Link to="/login" className="register-text-link">Login</Link>
+              Already have an account?{" "}
+              <Link to="/login" className="register-text-link">
+                Login
+              </Link>
             </p>
           </form>
         </div>
