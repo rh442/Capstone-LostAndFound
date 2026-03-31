@@ -1,83 +1,85 @@
 import { Link } from "react-router-dom";
+import PublicPageFrame from "../../components/PublicPageFrame";
 import "./ContactPage.css";
-import logo from "../../assets/logo.png";
+import contactHeroImage from "../../assets/public/campus-friends.jpg";
 
 export default function ContactPage() {
   return (
-    <div className="contact-page">
-      <header className="contact-header">
-        <Link to="/" className="brand">
-          <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
-          <span className="brand-text">Lost & Found</span>
-        </Link>
-
-        <div className="top-nav">
-          <Link to="/" className="top-nav-link">Home</Link>
-          <Link to="/login" className="top-nav-link">Login</Link>
-          <Link to="/register" className="top-nav-link">Register</Link>
-        </div>
-      </header>
-
-      <main className="contact-main">
-        <section className="contact-hero">
-          <div className="contact-badge">Need Assistance?</div>
-          <h1 className="contact-title">Contact Lost &amp; Found</h1>
-          <p className="contact-subtitle">
-            Reach out if you need help with a lost item report, account access,
-            or the verification process.
+    <PublicPageFrame active="contact">
+      <section className="section-shell contact-hero">
+        <div className="contact-hero__copy">
+          <div className="home-highlight-label">Need assistance?</div>
+          <h1 className="contact-hero__title">Contact the support team.</h1>
+          <p className="contact-hero__lead">
+            Use the support email for report questions, account access help,
+            and recovery updates. It is the fastest way to reach the team.
           </p>
-        </section>
+        </div>
 
-        <section className="contact-grid">
-          <div className="contact-card">
-            <h2>Contact Information</h2>
+        <div className="contact-hero__visual">
+          <img
+            src={contactHeroImage}
+            alt="Two students talking while working outdoors on campus"
+          />
+        </div>
+      </section>
 
-            <div className="contact-item">
-              <span className="contact-label">Email</span>
-              <p>lostandfound@hunter.cuny.edu</p>
+      <section className="section-shell contact-info">
+        <div className="home-highlight-label">Contact information</div>
+        <h2 className="contact-info__title">Support contact.</h2>
+        <p className="contact-info__lead">
+          Use the contact details below for report questions, account issues,
+          verification updates, and recovery guidance.
+        </p>
+
+        <div className="contact-card">
+          <div className="contact-card__header">
+            <span className="contact-card__eyebrow">Primary contact</span>
+            <a
+              href="mailto:lostandfound@hunter.cuny.edu"
+              className="contact-card__email"
+            >
+              lostandfound@hunter.cuny.edu
+            </a>
+          </div>
+
+          <div className="contact-card__body">
+            <div className="contact-card__row">
+              <span className="contact-card__label">Office</span>
+              <p className="contact-card__value">Hunter College Security Office</p>
             </div>
 
-            <div className="contact-item">
-              <span className="contact-label">Office</span>
-              <p>Hunter College Security Office</p>
+            <div className="contact-card__row">
+              <span className="contact-card__label">Phone</span>
+              <p className="contact-card__value">(201) 555-0148</p>
             </div>
 
-            <div className="contact-item">
-              <span className="contact-label">Hours</span>
-              <p>Monday – Friday</p>
-              <p>9:00 AM – 5:00 PM</p>
+            <div className="contact-card__row">
+              <span className="contact-card__label">Hours</span>
+              <div className="contact-card__value-group">
+                <p className="contact-card__value">Monday to Friday</p>
+                <p className="contact-card__value">9:00 AM to 5:00 PM</p>
+              </div>
             </div>
           </div>
 
-          <div className="contact-card">
-            <h2>When to Contact Us</h2>
-            <ul className="contact-list">
-              <li>You need help submitting a lost item report.</li>
-              <li>You believe an administrator may have matched your item.</li>
-              <li>You have questions about account access or messaging.</li>
-              <li>You need support with the item verification process.</li>
-            </ul>
+          <div className="contact-card__footer">
+            <a
+              href="mailto:lostandfound@hunter.cuny.edu"
+              className="home-header__button contact-card__cta"
+            >
+              <span className="home-header__button-face">Email Support</span>
+            </a>
+
+            <Link to="/privacy" className="link-arrow contact-card__link">
+              Read privacy details
+              <span className="link-arrow__icon" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </div>
-        </section>
-
-        <section className="contact-card contact-card--full">
-          <h2>Support Note</h2>
-          <p>
-            To protect privacy and prevent fraudulent claims, detailed found-item
-            information is not publicly shared. Administrators will contact you
-            if additional information is needed to verify ownership.
-          </p>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <div className="site-footer-links">
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/privacy">Privacy</Link>
         </div>
-        <span>© 2026 Lost & Found</span>
-      </footer>
-    </div>
+      </section>
+    </PublicPageFrame>
   );
 }

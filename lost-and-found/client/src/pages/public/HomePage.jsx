@@ -1,141 +1,187 @@
 import { Link } from "react-router-dom";
-import "./HomePage.css";
-import logo from "../../assets/logo.png";
+import PublicPageFrame from "../../components/PublicPageFrame";
+import heroMainImage from "../../assets/public/campus-friends.jpg";
+import heroBackdropImage from "../../assets/public/university-facade.jpg";
+import spotlightOneImage from "../../assets/public/campus-laptop.jpg";
+import spotlightTwoImage from "../../assets/public/hero-students.jpg";
+import spotlightThreeImage from "../../assets/public/academic-students.jpg";
+import bulletinImage from "../../assets/public/lecture-discussion.jpg";
+import academicImage from "../../assets/public/academic-campus.jpg";
 
 export default function HomePage() {
-  const steps = [
+  const spotlightCards = [
     {
-      title: "Submit a Report",
-      text: "Describe your lost item, where you last saw it, and any identifying details.",
+      title: "Cleaner reporting",
+      text: "Students can describe what they lost quickly without extra friction.",
+      image: spotlightOneImage,
+      accentClass: "home-spotlight__card--purple",
     },
     {
-      title: "Admin Review",
-      text: "Administrators review secure found-item records to look for a possible match.",
+      title: "Faster follow-up",
+      text: "The path from report to updates feels clearer and easier to trust.",
+      image: spotlightTwoImage,
+      accentClass: "home-spotlight__card--gold",
     },
     {
-      title: "Verify & Recover",
-      text: "If a match exists, you’ll be contacted to confirm ownership before pickup.",
+      title: "Private review",
+      text: "Sensitive details stay protected while administrators verify matches.",
+      image: spotlightThreeImage,
+      accentClass: "home-spotlight__card--muted",
     },
   ];
 
-  const features = [
+  const quickFacts = [
     {
-      title: "Private Matching",
-      text: "Item details stay protected so ownership can be verified securely.",
+      title: "Private matching",
+      text: "Item details stay with administrators until ownership is confirmed.",
     },
     {
-      title: "Admin Verification",
-      text: "Returns are handled through a review process instead of public claiming.",
+      title: "Fast reporting",
+      text: "Students can submit a report in minutes with the key details included.",
     },
     {
-      title: "Student Messaging",
-      text: "Students can communicate with admins during the matching process.",
+      title: "Clear updates",
+      text: "Messages and next steps stay in one place instead of getting lost.",
     },
   ];
 
   return (
-    <div className="home-page">
-      <header className="home-header">
-        <Link to="/" className="brand">
-          <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
-          <span className="brand-text">Lost & Found</span>
-        </Link>
+    <PublicPageFrame active="home">
+      <section className="section-shell home-hero">
+        <div className="home-hero__copy">
+          <div className="home-highlight-label">Hunter lost &amp; found</div>
+          <h1 className="home-hero__title">Find What Matters.</h1>
 
-        <div className="top-nav">
-          <Link to="/" className="top-nav-link">Home</Link>
-          <Link to="/login" className="top-nav-link">Login</Link>
-          <Link to="/register" className="top-nav-link">Register</Link>
-        </div>
-      </header>
-
-      <section className="home-hero">
-        <div className="home-hero__badge">Hunter College Service</div>
-
-        <h1 className="home-hero__title">
-          Lost &amp; Found at Hunter College
-        </h1>
-
-        <p className="home-hero__subtitle">
-          A secure system for reporting lost items and recovering them through
-          administrator verification.
-        </p>
-
-        <div className="home-hero__actions">
-          <Link to="/register" className="home-hero__button primary">
-            Get Started
-          </Link>
-          <Link to="/login" className="home-hero__button secondary">
-            Login
-          </Link>
-        </div>
-      </section>
-
-      <section className="home-section">
-        <div className="home-section__heading">
-          <h2>How It Works</h2>
-          <p>
-            Designed to protect item details while helping students recover
-            belongings more efficiently.
+          <p className="home-hero__lead">
+            A clearer, faster way for Hunter students to report lost items,
+            follow updates, and recover what matters.
           </p>
+
+          <div className="home-hero__actions">
+            <Link to="/register" className="link-arrow">
+              Report an item
+              <span className="link-arrow__icon" aria-hidden="true">
+                →
+              </span>
+            </Link>
+            <Link to="/login" className="link-arrow">
+              Sign in
+              <span className="link-arrow__icon" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </div>
         </div>
 
-        <div className="home-cards-grid">
-          {steps.map((step, index) => (
-            <div key={step.title} className="home-card">
-              <div className="home-card__number">0{index + 1}</div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
+        <div className="home-hero__visual">
+          <div className="home-hero__backdrop">
+            <img src={heroBackdropImage} alt="A university building facade" />
+          </div>
+          <div className="home-hero__main-image">
+            <img
+              src={heroMainImage}
+              alt="Two students working together outdoors on campus"
+            />
+          </div>
+          <div className="home-hero__accent-bar" aria-hidden="true"></div>
+        </div>
+
+        <div className="home-hero__meta">
+          {quickFacts.map((fact) => (
+            <div key={fact.title} className="home-hero__meta-item">
+              <strong>{fact.title}</strong>
+              <span>{fact.text}</span>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="home-section home-section--alt">
-        <div className="home-section__heading">
-          <h2>Why Use This System</h2>
-          <p>
-            Built for a university environment where privacy, verification, and
-            clear communication matter.
-          </p>
+      <section className="section-shell home-spotlight">
+        <div className="home-spotlight__header">
+          <div className="home-highlight-label">Spotlight</div>
+          <div className="home-spotlight__arrows" aria-hidden="true">
+            <span>←</span>
+            <span>→</span>
+          </div>
         </div>
 
-        <div className="home-cards-grid">
-          {features.map((feature) => (
-            <div key={feature.title} className="home-card">
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </div>
+        <div className="home-spotlight__grid">
+          {spotlightCards.map((card) => (
+            <article
+              key={card.title}
+              className={`home-spotlight__card ${card.accentClass}`}
+            >
+              <div className="home-spotlight__image">
+                <img src={card.image} alt={card.title} />
+              </div>
+
+              <h2>{card.title}</h2>
+              <p>{card.text}</p>
+
+              <Link to="/about" className="link-arrow link-arrow--sm">
+                Learn more
+                <span className="link-arrow__icon" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="home-cta">
-        <div className="home-cta__content">
-          <h2>Need help recovering an item?</h2>
-          <p>
-            Create an account or log in to submit a lost item report and track
-            updates from administrators.
-          </p>
-        </div>
+      <section className="section-shell">
+        <article className="home-bulletin">
+          <img
+            src={bulletinImage}
+            alt="Students taking part in a classroom discussion"
+            className="home-bulletin__image"
+          />
+          <div className="home-bulletin__overlay" aria-hidden="true"></div>
 
-        <div className="home-cta__actions">
-          <Link to="/register" className="home-hero__button primary">
-            Register
-          </Link>
-          <Link to="/login" className="home-hero__button secondary">
-            Login
-          </Link>
-        </div>
+          <div className="home-bulletin__content">
+            <div className="home-highlight-label home-highlight-label--light">
+              Tracking hub
+            </div>
+            <h2>Keep reports and updates in one place</h2>
+            <p>
+              Students can submit a report, check the latest status, and stay
+              in contact with administrators without a messy handoff.
+            </p>
+
+            <Link to="/login" className="link-arrow link-arrow--light">
+              Visit the page
+              <span className="link-arrow__icon" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </div>
+        </article>
       </section>
 
-      <footer className="site-footer">
-        <div className="site-footer-links">
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/privacy">Privacy</Link>
+      <section className="section-shell home-academic">
+        <div className="home-academic__copy">
+          <div className="home-highlight-label">Student reporting experience</div>
+          <h2>Move Fast.</h2>
+          <p>
+            Start a report quickly, share the details that matter, and know
+            what happens next.
+          </p>
+
+          <Link to="/register" className="link-arrow">
+            Create your account
+            <span className="link-arrow__icon" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-        <span>© 2026 Lost & Found</span>
-      </footer>
-    </div>
+
+        <div className="home-academic__visual">
+          <div className="home-academic__image">
+            <img src={academicImage} alt="Students attending a lecture" />
+          </div>
+          <div className="home-academic__accent-bar" aria-hidden="true"></div>
+        </div>
+      </section>
+    </PublicPageFrame>
   );
 }
