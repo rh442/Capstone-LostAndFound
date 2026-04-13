@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import "./AdminOverview.css";
+import ModalOverview from "../../components/ModalOverview";
 
 export default function AdminOverview() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -114,10 +115,11 @@ export default function AdminOverview() {
         
       </main>
     </div>
-    <div className={`modal ${Visibility == true ? 'active' : ''}`}>
-              <button className="modal-close" onClick={changeVisibility}>✕</button>
-                <h1>Details Here</h1>
-        </div>
+          <ModalOverview
+            isOpen={Visibility}
+            onClose={changeVisibility}
+            report={selectedReport}
+          />
     </>
   );
 }

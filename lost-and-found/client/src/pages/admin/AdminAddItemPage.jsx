@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import "./AdminAddItemPage.css";
+import ModalOverview  from "../../components/ModalOverview";
 
 export default function AdminAddItemPage() {
   const [formData, setFormData] = useState({
@@ -119,6 +120,7 @@ export default function AdminAddItemPage() {
           </form>
         </div>
       </main>
+      <ModalOverview/>
     </div>
   );
 }

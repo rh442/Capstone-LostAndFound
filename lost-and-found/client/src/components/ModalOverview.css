@@ -1,0 +1,52 @@
+.modal {
+  display: none;             /* hidden by default */
+  position: fixed;           /* so it floats above everything */
+  z-index: 9999;             /* high enough to be on top */
+  width: 80%;
+  height: 80%;
+  background-color: purple;  /* visible background */
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* center it */
+}
+
+.modal.active {
+  display: flex;
+  flex-direction: column;
+  height: 80%;              /* ensure it has height */
+  padding: 20px;
+}
+.modal-close {
+  position: absolute;   /* float it over the modal */
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #ffcccc;
+}
+.modal h1 {
+  text-align: center;
+  width: 100%;
+}
+.innerModal {
+  display: flex;
+  flex-direction: row;
+  flex: 1;                 /* 👈 THIS IS KEY */
+  gap: 20px;
+}
+.innerModal > div {
+  flex: 1;                 /* each side takes half */
+}   
+
+.report, .match{
+    background-color: white;
+    text-align: center;
+}
