@@ -33,43 +33,16 @@ export default function ContactPage() {
         </p>
 
         <div className="contact-card">
-          <div className="contact-card__header">
-            <span className="contact-card__eyebrow">Primary contact</span>
-            <a
-              href="mailto:lostandfound@hunter.cuny.edu"
-              className="contact-card__email"
-            >
-              lostandfound@hunter.cuny.edu
-            </a>
-          </div>
-
-          <div className="contact-card__body">
-            <div className="contact-card__row">
-              <span className="contact-card__label">Office</span>
-              <p className="contact-card__value">Hunter College Security Office</p>
+          <div className="contact-card__left">
+            <div>
+              <span className="contact-card__eyebrow">Primary contact</span>
+              <a
+                href="mailto:lostandfound@hunter.cuny.edu"
+                className="contact-card__email"
+              >
+                lostandfound@hunter.cuny.edu
+              </a>
             </div>
-
-            <div className="contact-card__row">
-              <span className="contact-card__label">Phone</span>
-              <p className="contact-card__value">(201) 555-0148</p>
-            </div>
-
-            <div className="contact-card__row">
-              <span className="contact-card__label">Hours</span>
-              <div className="contact-card__value-group">
-                <p className="contact-card__value">Monday to Friday</p>
-                <p className="contact-card__value">9:00 AM to 5:00 PM</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="contact-card__footer">
-            <a
-              href="mailto:lostandfound@hunter.cuny.edu"
-              className="home-header__button contact-card__cta"
-            >
-              <span className="home-header__button-face">Email Support</span>
-            </a>
 
             <Link to="/privacy" className="link-arrow contact-card__link">
               Read privacy details
@@ -77,6 +50,33 @@ export default function ContactPage() {
                 →
               </span>
             </Link>
+          </div>
+
+          <div className="contact-card__right">
+            <div className="contact-card__details">
+              <div className="contact-card__detail">
+                <span className="contact-card__label">Office</span>
+                <p className="contact-card__value">Hunter College Security Office</p>
+              </div>
+
+              <div className="contact-card__detail">
+                <span className="contact-card__label">Phone</span>
+                <p className="contact-card__value">(201) 555-0148</p>
+              </div>
+
+              <div className="contact-card__detail">
+                <span className="contact-card__label">Hours</span>
+                <p className="contact-card__value">Monday to Friday</p>
+                <p className="contact-card__value">9:00 AM — 5:00 PM</p>
+              </div>
+            </div>
+
+            <a
+              href="mailto:lostandfound@hunter.cuny.edu"
+              className="home-header__button contact-card__cta"
+            >
+              <span className="home-header__button-face">Email Support</span>
+            </a>
           </div>
         </div>
       </section>

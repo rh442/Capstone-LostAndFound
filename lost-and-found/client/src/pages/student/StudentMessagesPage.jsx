@@ -55,6 +55,13 @@ export default function StudentMessagesPage() {
     setMessage("");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   const badgeClass = (status) => {
     if (status === "Pending") return "status-badge status-pending";
     if (status === "Matched") return "status-badge status-matched";
@@ -67,14 +74,17 @@ export default function StudentMessagesPage() {
 
       <main className="student-messages">
         <div className="student-messages__layout">
-          <aside className="student-messages__left card-surface">
-            <div className="student-messages__left-header">Messages</div>
+          <aside className="student-card student-messages__left">
+            <div className="student-messages__left-header">
+              <span className="student-eyebrow">Inbox</span>
+              <h2 className="student-messages__left-title">Messages</h2>
+            </div>
 
             {conversations.map((conversation) => (
               <button
                 key={conversation.id}
                 onClick={() => setSelectedConversationId(conversation.id)}
-                className={`student-messages__conversation ${conversation.id === selectedConversationId ? "active" : ""}`}
+                className={`student-messages__conversation${conversation.id === selectedConversationId ? " active" : ""}`}
               >
                 <div className="student-messages__conversation-top">
                   <strong>{conversation.title}</strong>
@@ -85,9 +95,10 @@ export default function StudentMessagesPage() {
             ))}
           </aside>
 
-          <section className="student-messages__right card-surface">
+          <section className="student-card student-messages__right">
             <div className="student-messages__header">
-              <h2>{selectedConversation.title}</h2>
+              <span className="student-eyebrow">Case</span>
+              <h2 className="student-messages__title">{selectedConversation.title}</h2>
               <div className="student-messages__badges">
                 {selectedConversation.status.map((status) => (
                   <span key={status} className={badgeClass(status)}>{status}</span>
@@ -99,9 +110,9 @@ export default function StudentMessagesPage() {
               {selectedConversation.messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={msg.isUser ? "student-messages__message-wrap user" : "student-messages__message-wrap admin"}
+                  className={`student-messages__message-wrap${msg.isUser ? " user" : " admin"}`}
                 >
-                  <div className={msg.isUser ? "student-messages__bubble user" : "student-messages__bubble admin"}>
+                  <div className={`student-messages__bubble${msg.isUser ? " user" : " admin"}`}>
                     {msg.text}
                   </div>
                   <div className="student-messages__time">{msg.time}</div>
@@ -113,10 +124,13 @@ export default function StudentMessagesPage() {
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Type a message..."
-                className="student-messages__input"
+                className="student-input student-messages__input"
               />
-              <button onClick={handleSend} className="primary-btn">Send</button>
+              <button onClick={handleSend} className="student-lift-btn">
+                <span className="student-lift-btn__face">Send</span>
+              </button>
             </div>
           </section>
         </div>

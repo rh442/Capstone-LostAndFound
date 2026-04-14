@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -26,22 +25,29 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
-      <header className="auth-header">
-          <Link to="/" className="brand">
-            <img src={logo} alt="Lost & Found Logo" className="brand-logo-img" />
-            <span className="brand-text">Lost & Found</span>
-          </Link>
+      <header className="auth-header-bar">
+        <div className="auth-header-inner">
+          <Link to="/" className="auth-brand">Lost &amp; Found Portal</Link>
 
-        <div className="top-nav">
-          <Link to="/" className="top-nav-link">Home</Link>
-          <Link to="/login" className="top-nav-link">Login</Link>
-          <Link to="/register" className="top-nav-link">Register</Link>
+          <nav className="auth-nav">
+            <Link to="/" className="auth-nav-link">Home</Link>
+            <Link to="/about" className="auth-nav-link">About</Link>
+            <Link to="/contact" className="auth-nav-link">Contact</Link>
+            <Link to="/privacy" className="auth-nav-link">Privacy</Link>
+          </nav>
+
+          <Link to="/register" className="auth-lift-btn">
+            <span className="auth-lift-btn__face">Create Account</span>
+          </Link>
         </div>
       </header>
 
       <main className="login-main">
-        <div className="login-card card-surface">
-          <h1 className="login-title">LOGIN</h1>
+        <div className="login-card">
+          <span className="auth-eyebrow">
+            {role === "admin" ? "Admin Portal" : "Student Portal"}
+          </span>
+          <h1 className="login-title">Sign In</h1>
 
           <div className="login-role-switch">
             <button
@@ -51,7 +57,6 @@ export default function LoginPage() {
             >
               Student
             </button>
-
             <button
               type="button"
               onClick={() => setRole("admin")}
@@ -63,32 +68,37 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="login-form">
             <div>
-              <label className="login-label">EMAIL</label>
+              <label className="auth-label">Email</label>
               <input
                 type="email"
-                placeholder="Enter email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="text-input"
+                className="auth-input"
               />
             </div>
 
             <div>
-              <label className="login-label">PASSWORD</label>
+              <label className="auth-label">Password</label>
               <input
                 type="password"
-                placeholder="Enter password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="text-input"
+                className="auth-input"
               />
             </div>
 
-            <button type="submit" className="primary-btn login-submit">LOGIN</button>
+            <button type="submit" className="auth-lift-btn auth-lift-btn--full">
+              <span className="auth-lift-btn__face">Sign In</span>
+            </button>
 
-            <p className="login-small-text">Forgot your password?</p>
-            <p className="login-small-text">
-              Don’t have an account? <Link to="/register" className="login-text-link">Register</Link>
+            <p className="auth-small-text">Forgot your password?</p>
+            <p className="auth-small-text">
+              Don&apos;t have an account?{" "}
+              <Link to="/register" className="auth-text-link">
+                Register <span aria-hidden="true">→</span>
+              </Link>
             </p>
           </form>
         </div>
@@ -100,7 +110,7 @@ export default function LoginPage() {
           <Link to="/contact">Contact</Link>
           <Link to="/privacy">Privacy</Link>
         </div>
-        <span>© 2026 Lost & Found</span>
+        <span>© 2026 Lost &amp; Found</span>
       </footer>
     </div>
   );
