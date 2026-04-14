@@ -1,5 +1,4 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 import "./StudentSidebar.css";
 
 export default function StudentSidebar() {
@@ -23,14 +22,12 @@ export default function StudentSidebar() {
     <aside className="student-sidebar">
       <div>
         <div className="student-sidebar__brand">
-            <img src={logo} alt="student-sidebar__logo" className="brand-logo-img" />
-            <span className="student-sidebar__text">Lost & Found</span>
+          <span className="student-sidebar__brand-text">Lost &amp; Found Portal</span>
         </div>
 
         <nav className="student-sidebar__nav">
           {links.map((link) => {
             const isActive = location.pathname === link.path;
-
             return (
               <Link
                 key={link.path}

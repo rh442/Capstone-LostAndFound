@@ -44,31 +44,32 @@ export default function StudentLostItemForm() {
       <StudentSidebar />
 
       <main className="student-form-page">
-        <div className="student-form-page__card card-surface">
-          <h1 className="student-form-page__title">LOST ITEM FORM</h1>
+        <div className="student-card student-form-page__card">
+          <span className="student-eyebrow">New Submission</span>
+          <h1 className="student-form-page__title">Lost Item Form</h1>
           <p className="student-form-page__subtitle">
             Submit the details of your lost item so the admin team can review it.
           </p>
 
           <form onSubmit={handleSubmit} className="student-form-page__form">
             <div>
-              <label className="student-form-page__label">Item Name *</label>
+              <label className="student-label">Item Name *</label>
               <input
                 name="itemName"
                 value={formData.itemName}
                 onChange={handleChange}
-                className="text-input"
+                className="student-input"
                 placeholder="Ex: Black backpack"
               />
             </div>
 
             <div>
-              <label className="student-form-page__label">Category *</label>
+              <label className="student-label">Category *</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="select-input"
+                className="student-select"
               >
                 <option value="">Select a category</option>
                 {categories.map((category) => (
@@ -78,44 +79,51 @@ export default function StudentLostItemForm() {
             </div>
 
             <div>
-              <label className="student-form-page__label">Location Lost *</label>
+              <label className="student-label">Location Lost *</label>
               <input
                 name="locationLost"
                 value={formData.locationLost}
                 onChange={handleChange}
-                className="text-input"
+                className="student-input"
                 placeholder="Ex: Hunter North, Library, Cafeteria"
               />
             </div>
 
             <div>
-              <label className="student-form-page__label">Date Lost *</label>
+              <label className="student-label">Date Lost *</label>
               <input
                 type="date"
                 name="dateLost"
                 value={formData.dateLost}
                 onChange={handleChange}
-                className="text-input"
+                className="student-input"
               />
             </div>
 
             <div>
-              <label className="student-form-page__label">Description *</label>
+              <label className="student-label">Description *</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="text-area"
+                className="student-textarea"
                 placeholder="Describe color, brand, size, or unique details..."
               />
             </div>
 
             <div>
-              <label className="student-form-page__label">Upload Image</label>
-              <input type="file" name="image" onChange={handleChange} className="student-form-page__file" />
+              <label className="student-label">Upload Image</label>
+              <input
+                type="file"
+                name="image"
+                onChange={handleChange}
+                className="student-form-page__file"
+              />
             </div>
 
-            <button type="submit" className="primary-btn student-form-page__submit">SUBMIT</button>
+            <button type="submit" className="student-lift-btn student-lift-btn--full">
+              <span className="student-lift-btn__face">Submit Report</span>
+            </button>
           </form>
         </div>
       </main>

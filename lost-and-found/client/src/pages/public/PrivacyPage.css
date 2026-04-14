@@ -3,6 +3,7 @@
   grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
   gap: clamp(28px, 4vw, 54px);
   align-items: center;
+  min-height: clamp(380px, 44vw, 520px);
 }
 
 .privacy-hero__title,
@@ -47,7 +48,7 @@
 
 .privacy-hero__visual {
   position: relative;
-  align-self: start;
+  align-self: center;
   width: 100%;
   aspect-ratio: 16 / 11;
   overflow: hidden;

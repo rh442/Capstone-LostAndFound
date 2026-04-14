@@ -39,8 +39,9 @@ export default function StudentReportsPage() {
 
       <main className="student-reports">
         <div className="student-reports__header">
-          <h1 className="page-title">My Reports</h1>
-          <p className="page-subtitle">Review the status of your lost item submissions.</p>
+          <span className="student-eyebrow">Submissions</span>
+          <h1 className="student-page-title">My Reports</h1>
+          <p className="student-page-subtitle">Review the status of your lost item submissions.</p>
         </div>
 
         <div className="student-reports__topbar">
@@ -49,7 +50,7 @@ export default function StudentReportsPage() {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`student-reports__filter-btn ${activeFilter === filter ? "active" : ""}`}
+                className={`student-reports__filter-btn${activeFilter === filter ? " active" : ""}`}
               >
                 {filter}
               </button>
@@ -61,12 +62,12 @@ export default function StudentReportsPage() {
             placeholder="Search reports..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="student-reports__search"
+            className="student-input student-reports__search"
           />
         </div>
 
-        <div className="student-reports__table card-surface">
-          <table className="section-table">
+        <div className="student-card student-reports__table">
+          <table className="student-table">
             <thead>
               <tr>
                 <th>Item</th>
@@ -76,7 +77,6 @@ export default function StudentReportsPage() {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
               {filteredReports.length > 0 ? (
                 filteredReports.map((report) => (
@@ -86,8 +86,8 @@ export default function StudentReportsPage() {
                     <td>{report.dateSubmitted}</td>
                     <td><span className={statusClass(report.status)}>{report.status}</span></td>
                     <td>
-                      <button className={report.action === "Chat" ? "secondary-btn" : "primary-btn"}>
-                        {report.action}
+                      <button className={`student-lift-btn${report.action === "Chat" ? " student-lift-btn--ghost" : ""}`}>
+                        <span className="student-lift-btn__face">{report.action}</span>
                       </button>
                     </td>
                   </tr>

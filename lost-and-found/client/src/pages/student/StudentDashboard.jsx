@@ -21,33 +21,35 @@ export default function StudentDashboard() {
 
       <main className="student-dashboard">
         <div className="student-dashboard__header">
-          <h1 className="page-title">Welcome, [Name]</h1>
-          <p className="page-subtitle">Track your lost item requests and updates.</p>
+          <span className="student-eyebrow">Overview</span>
+          <h1 className="student-page-title">Welcome, [Name]</h1>
+          <p className="student-page-subtitle">Track your lost item requests and updates.</p>
         </div>
 
         <div className="student-dashboard__stats">
-          <div className="student-dashboard__stat card-surface">
-            <div className="student-dashboard__stat-label">Pending</div>
+          <div className="student-card student-dashboard__stat">
+            <span className="student-eyebrow">Pending</span>
             <div className="student-dashboard__stat-value">2</div>
           </div>
 
-          <div className="student-dashboard__stat card-surface">
-            <div className="student-dashboard__stat-label">Matched</div>
+          <div className="student-card student-dashboard__stat">
+            <span className="student-eyebrow">Matched</span>
             <div className="student-dashboard__stat-value">1</div>
           </div>
 
-          <div className="student-dashboard__stat card-surface">
-            <div className="student-dashboard__stat-label">Resolved</div>
+          <div className="student-card student-dashboard__stat">
+            <span className="student-eyebrow">Resolved</span>
             <div className="student-dashboard__stat-value">1</div>
           </div>
         </div>
 
-        <div className="student-dashboard__table card-surface">
+        <div className="student-card student-dashboard__table">
           <div className="student-dashboard__table-header">
-            <h2>Recent Reports</h2>
+            <span className="student-eyebrow">Activity</span>
+            <h2 className="student-section-title">Recent Reports</h2>
           </div>
 
-          <table className="section-table">
+          <table className="student-table">
             <thead>
               <tr>
                 <th>Item</th>
@@ -62,7 +64,11 @@ export default function StudentDashboard() {
                   <td>{report.item}</td>
                   <td>{report.date}</td>
                   <td><span className={statusClass(report.status)}>{report.status}</span></td>
-                  <td><button className="primary-btn student-dashboard__view-btn">View</button></td>
+                  <td>
+                    <button className="student-lift-btn">
+                      <span className="student-lift-btn__face">View</span>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

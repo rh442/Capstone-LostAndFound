@@ -325,6 +325,7 @@
 .home-hero__visual {
   position: relative;
   min-height: clamp(420px, 53vw, 680px);
+  grid-row: 1 / span 2;
 }
 
 .home-hero__backdrop {
@@ -691,14 +692,8 @@
     grid-template-columns: 1fr;
   }
 
-  .home-header__inner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .home-header__nav,
-  .home-header__actions {
-    justify-content: flex-start;
+  .home-hero__visual {
+    grid-row: auto;
   }
 
   .home-hero__meta {
