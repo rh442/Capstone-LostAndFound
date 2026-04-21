@@ -120,7 +120,7 @@ export default function AdminAddItemPage() {
           </form>
         </div>
       </main>
-      <ModalOverview/>
+      <ModalOverview/ >
     </div>
   );
 }

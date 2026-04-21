@@ -14,7 +14,7 @@
 .modal.active {
   display: flex;
   flex-direction: column;
-  height: 80%;              /* ensure it has height */
+  height: 90%;              /* ensure it has height */
   padding: 20px;
 }
 .modal-close {
@@ -43,10 +43,68 @@
   gap: 20px;
 }
 .innerModal > div {
-  flex: 1;                 /* each side takes half */
+  flex: 1; 
+  height: 450px;                /* each side takes half */
 }   
 
 .report, .match{
     background-color: white;
     text-align: center;
+}
+/* .item-set{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+} */
+.item-set img{
+  width:100px;
+
+}
+.innerModal > div {
+  flex: 1;
+  overflow: visible; 
+}
+
+.list_container {
+  height: 100%;
+  overflow-y: auto;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  overflow: hidden;
+}
+td img {
+  width: 60px;  /* shrink image to fit */
+}
+.MatchedItem{
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+.MatchedItem button{
+  display: inline-block;
+}
+.Item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button-container{
+  display: flex;
+  justify-content: end;
+}
+.MatchedItem button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
 }
