@@ -1,65 +1,74 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import AdminSidebar from "../../components/AdminSidebar";
+import { useAuth } from "../../context/AuthContext";
+import { api } from "../../lib/api";
 import "./AdminMessagesPage.css";
 
 export default function AdminMessagesPage() {
-  const [selectedConversationId, setSelectedConversationId] = useState(1);
-  const [message, setMessage] = useState("");
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const [conversations, setConversations]    = useState([]);
+  const [selectedId, setSelectedId]          = useState(null);
+  const [messages, setMessages]              = useState([]);
+  const [message, setMessage]                = useState("");
+  const [loadingConvos, setLoadingConvos]    = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const threadRef = useRef(null);
 
-  const conversations = [
-    {
-      id: 1,
-      title: "Black Backpack",
-      date: "Feb 20",
-      preview: "Can you describe any markings on the backpack?",
-      status: ["Matched", "Pending"],
-      messages: [
-        { id: 1, text: "Can you describe any markings on the backpack?", time: "2:04 PM", isUser: false },
-        { id: 2, text: "Yes, it is black with a red zipper and a school logo on the front pocket.", time: "2:17 PM", isUser: true },
-      ],
-    },
-    {
-      id: 2,
-      title: "Laptop Charger",
-      date: "Feb 14",
-      preview: "Provide a description of your charger.",
-      status: ["Pending"],
-      messages: [{ id: 1, text: "Please describe the charger brand and cable type.", time: "1:10 PM", isUser: false }],
-    },
-    {
-      id: 3,
-      title: "Set of Keys",
-      date: "Feb 10",
-      preview: "Please provide details so we can verify ownership.",
-      status: ["Matched"],
-      messages: [{ id: 1, text: "Do the keys have any keychains or tags attached?", time: "11:22 AM", isUser: false }],
-    },
-    {
-      id: 4,
-      title: "Water Bottle",
-      date: "Feb 9",
-      preview: "Provide a description of the bottle.",
-      status: ["Resolved"],
-      messages: [{ id: 1, text: "Your item has been confirmed and marked as resolved.", time: "9:05 AM", isUser: false }],
-    },
-  ];
+  useEffect(() => {
+    api.get("/messages")
+      .then((data) => {
+        setConversations(data);
+        // Deep-link from ?reportId or fall back to first conversation
+        const paramId = searchParams.get("reportId");
+        if (paramId) {
+          setSelectedId(Number(paramId));
+        } else if (data.length > 0) {
+          setSelectedId(data[0].report_id);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoadingConvos(false));
+  }, []);
 
-  const selectedConversation = useMemo(
-    () => conversations.find((c) => c.id === selectedConversationId) || conversations[0],
-    [selectedConversationId]
-  );
+  useEffect(() => {
+    if (!selectedId) return;
+    setLoadingMessages(true);
+    api.get(`/messages/${selectedId}`)
+      .then(setMessages)
+      .catch(console.error)
+      .finally(() => setLoadingMessages(false));
+  }, [selectedId]);
 
-  const handleSend = () => {
-    if (!message.trim()) return;
-    alert(`Message sent: ${message}`);
-    setMessage("");
+  useEffect(() => {
+    if (threadRef.current) threadRef.current.scrollTop = threadRef.current.scrollHeight;
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!message.trim() || !selectedId) return;
+    try {
+      const sent = await api.post(`/messages/${selectedId}`, { content: message.trim() });
+      setMessages((prev) => [...prev, sent]);
+      setMessage("");
+      setConversations((prev) =>
+        prev.map((c) => c.report_id === selectedId ? { ...c, last_message: sent.content } : c)
+      );
+    } catch (err) {
+      alert(err.message);
+    }
   };
+
+  const formatTime = (iso) =>
+    iso ? new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) : "";
 
   const badgeClass = (status) => {
-    if (status === "Pending") return "status-badge status-pending";
-    if (status === "Matched") return "status-badge status-matched";
+    if (status === "Pending")  return "status-badge status-pending";
+    if (status === "Matched")  return "status-badge status-matched";
     return "status-badge status-resolved";
   };
+
+  const selected = conversations.find((c) => c.report_id === selectedId);
 
   return (
     <div className="admin-layout">
@@ -67,57 +76,77 @@ export default function AdminMessagesPage() {
 
       <main className="admin-messages">
         <div className="admin-messages__layout">
-          <aside className="admin-messages__left card-surface">
+          <aside className="admin-messages__left">
             <div className="admin-messages__left-header">Messages</div>
 
-            {conversations.map((conversation) => (
-              <button
-                key={conversation.id}
-                onClick={() => setSelectedConversationId(conversation.id)}
-                className={`admin-messages__conversation ${conversation.id === selectedConversationId ? "active" : ""}`}
-              >
-                <div className="admin-messages__conversation-top">
-                  <strong>{conversation.title}</strong>
-                  <span>{conversation.date}</span>
-                </div>
-                <p>{conversation.preview}</p>
-              </button>
-            ))}
+            {loadingConvos ? (
+              <p style={{ padding: "20px", color: "var(--muted)", fontSize: 14 }}>Loading...</p>
+            ) : conversations.length === 0 ? (
+              <p style={{ padding: "20px", color: "var(--muted)", fontSize: 14 }}>No conversations yet.</p>
+            ) : (
+              conversations.map((c) => (
+                <button key={c.report_id} onClick={() => setSelectedId(c.report_id)}
+                  className={`admin-messages__conversation${c.report_id === selectedId ? " active" : ""}`}>
+                  <div className="admin-messages__conversation-top">
+                    <strong>{c.item_name}</strong>
+                    <span>{c.student_name}</span>
+                  </div>
+                  <div className="admin-messages__conversation-meta">
+                    <span className={badgeClass(c.status)}>{c.status}</span>
+                    <p>{c.last_message || "No messages yet"}</p>
+                  </div>
+                </button>
+              ))
+            )}
           </aside>
 
-          <section className="admin-messages__right card-surface">
-            <div className="admin-messages__header">
-              <h2>{selectedConversation.title}</h2>
-              <div className="admin-messages__badges">
-                {selectedConversation.status.map((status) => (
-                  <span key={status} className={badgeClass(status)}>{status}</span>
-                ))}
+          <section className="admin-messages__right">
+            {!selected ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flex: 1, color: "var(--muted)" }}>
+                Select a conversation
               </div>
-            </div>
-
-            <div className="admin-messages__thread">
-              {selectedConversation.messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={msg.isUser ? "admin-messages__message-wrap admin" : "admin-messages__message-wrap user"}
-                >
-                  <div className={msg.isUser ? "admin-messages__bubble admin" : "admin-messages__bubble user"}>
-                    {msg.text}
+            ) : (
+              <>
+                <div className="admin-messages__header">
+                  <h2>{selected.item_name}</h2>
+                  <div className="admin-messages__badges">
+                    <span className={badgeClass(selected.status)}>{selected.status}</span>
+                    {selected.student_name && (
+                      <span className="status-badge status-pending">{selected.student_name}</span>
+                    )}
                   </div>
-                  <div className="admin-messages__time">{msg.time}</div>
                 </div>
-              ))}
-            </div>
 
-            <div className="admin-messages__input-row">
-              <input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type a message..."
-                className="admin-messages__input"
-              />
-              <button onClick={handleSend} className="primary-btn">Send</button>
-            </div>
+                <div className="admin-messages__thread" ref={threadRef}>
+                  {loadingMessages ? (
+                    <p style={{ color: "var(--muted)", fontSize: 14 }}>Loading messages...</p>
+                  ) : messages.length === 0 ? (
+                    <p style={{ color: "var(--muted)", fontSize: 14 }}>No messages yet. Send one to start.</p>
+                  ) : (
+                    messages.map((msg) => {
+                      const isAdmin = msg.sender_role === "admin";
+                      return (
+                        <div key={msg.id} className={`admin-messages__message-wrap${isAdmin ? " user" : " admin"}`}>
+                          <div className={`admin-messages__bubble${isAdmin ? " user" : " admin"}`}>
+                            {msg.content}
+                          </div>
+                          <div className="admin-messages__time">{formatTime(msg.created_at)}</div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <div className="admin-messages__input-row">
+                  <input value={message} onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }}}
+                    placeholder="Type a message..." className="admin-messages__input" />
+                  <button onClick={handleSend} className="admin-lift-btn">
+                    <span className="admin-lift-btn__face">Send</span>
+                  </button>
+                </div>
+              </>
+            )}
           </section>
         </div>
       </main>

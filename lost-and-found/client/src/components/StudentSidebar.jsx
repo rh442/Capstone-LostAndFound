@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./StudentSidebar.css";
 
 export default function StudentSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const links = [
     { label: "Dashboard", path: "/student-dashboard" },
@@ -13,8 +15,7 @@ export default function StudentSidebar() {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    logout();
     navigate("/login");
   };
 

@@ -1,62 +1,66 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import HomePage from "../pages/public/HomePage";
-import LoginPage from "../pages/auth/LoginPage";
-import RegisterPage from "../pages/auth/RegisterPage";
-import StudentDashboard from "../pages/student/StudentDashboard";
-import StudentLostItemForm from "../pages/student/StudentLostItemForm";
-import StudentReportsPage from "../pages/student/StudentReportsPage";
-import StudentMessagesPage from "../pages/student/StudentMessagesPage";
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import AboutPage from "../pages/public/AboutPage";
-import ContactPage from "../pages/public/ContactPage";
-import PrivacyPage from "../pages/public/PrivacyPage";
-import AdminMessagesPage from "../pages/admin/AdminMessagesPage";
-import AdminAddItemPage from '../pages/admin/AdminAddItemPage'
-import AdminOverview from "../pages/admin/AdminOverview";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "../context/AuthContext";
 
-function AdminRequestsPage() {
-  return <h1 style={{ padding: "40px" }}>Admin Requests Page</h1>;
-}
+import HomePage         from "../pages/public/HomePage";
+import AboutPage        from "../pages/public/AboutPage";
+import ContactPage      from "../pages/public/ContactPage";
+import PrivacyPage      from "../pages/public/PrivacyPage";
+import LoginPage        from "../pages/auth/LoginPage";
+import RegisterPage     from "../pages/auth/RegisterPage";
+import StudentDashboard    from "../pages/student/StudentDashboard";
+import StudentLostItemForm from "../pages/student/StudentLostItemForm";
+import StudentReportsPage  from "../pages/student/StudentReportsPage";
+import StudentMessagesPage from "../pages/student/StudentMessagesPage";
+import AdminDashboard   from "../pages/admin/AdminDashboard";
+import AdminMessagesPage from "../pages/admin/AdminMessagesPage";
+import AdminAddItemPage  from "../pages/admin/AdminAddItemPage";
+import AdminOverview     from "../pages/admin/AdminOverview";
 
 function ScrollToTop() {
   const location = useLocation();
-
   useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location.pathname]);
-
   return null;
+}
+
+function ProtectedRoute({ children, role }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div style={{ padding: 40, fontFamily: "sans-serif" }}>Loading...</div>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (role && user.role !== role) return <Navigate to="/login" replace />;
+  return children;
 }
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <AuthProvider>
+        <ScrollToTop />
+        <Routes>
+          {/* Public */}
+          <Route path="/"        element={<HomePage />} />
+          <Route path="/about"   element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/login"   element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="/student-report-item" element={<StudentLostItemForm />} />
-        <Route path="/student-reports" element={<StudentReportsPage />} />
-        <Route path="/student-messages" element={<StudentMessagesPage />} />
+          {/* Student */}
+          <Route path="/student-dashboard"   element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>} />
+          <Route path="/student-report-item" element={<ProtectedRoute role="student"><StudentLostItemForm /></ProtectedRoute>} />
+          <Route path="/student-reports"     element={<ProtectedRoute role="student"><StudentReportsPage /></ProtectedRoute>} />
+          <Route path="/student-messages"    element={<ProtectedRoute role="student"><StudentMessagesPage /></ProtectedRoute>} />
 
-        <Route path="/admin-requests" element={<AdminRequestsPage />} />
-        <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
-        <Route path='/admin-message' element={<AdminMessagesPage/>}/>
-        <Route path='/admin-add' element={<AdminAddItemPage/>}/>
-        <Route path="/admin-overview" element={<AdminOverview/>}/>
-
-        <Route path="/about" element={<AboutPage />}/>
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-      </Routes>
+          {/* Admin */}
+          <Route path="/admin-dashboard" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin-message"   element={<ProtectedRoute role="admin"><AdminMessagesPage /></ProtectedRoute>} />
+          <Route path="/admin-add"       element={<ProtectedRoute role="admin"><AdminAddItemPage /></ProtectedRoute>} />
+          <Route path="/admin-overview"  element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

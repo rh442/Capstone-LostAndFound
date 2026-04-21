@@ -1,70 +1,69 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StudentSidebar from "../../components/StudentSidebar";
+import { useAuth } from "../../context/AuthContext";
+import { api } from "../../lib/api";
 import "./StudentMessagesPage.css";
 
 export default function StudentMessagesPage() {
-  const [selectedConversationId, setSelectedConversationId] = useState(1);
-  const [message, setMessage] = useState("");
+  const { user } = useAuth();
+  const [conversations, setConversations]       = useState([]);
+  const [selectedId, setSelectedId]             = useState(null);
+  const [messages, setMessages]                 = useState([]);
+  const [message, setMessage]                   = useState("");
+  const [loadingConvos, setLoadingConvos]        = useState(true);
+  const [loadingMessages, setLoadingMessages]    = useState(false);
+  const threadRef = useRef(null);
 
-  const conversations = [
-    {
-      id: 1,
-      title: "Black Backpack",
-      date: "Feb 20",
-      preview: "Can you describe any markings on the backpack?",
-      status: ["Matched", "Pending"],
-      messages: [
-        { id: 1, text: "Can you describe any markings on the backpack?", time: "2:04 PM", isUser: false },
-        { id: 2, text: "Yes, it is black with a red zipper and a school logo on the front pocket.", time: "2:17 PM", isUser: true },
-      ],
-    },
-    {
-      id: 2,
-      title: "Laptop Charger",
-      date: "Feb 14",
-      preview: "Provide a description of your charger.",
-      status: ["Pending"],
-      messages: [{ id: 1, text: "Please describe the charger brand and cable type.", time: "1:10 PM", isUser: false }],
-    },
-    {
-      id: 3,
-      title: "Set of Keys",
-      date: "Feb 10",
-      preview: "Please provide details so we can verify ownership.",
-      status: ["Matched"],
-      messages: [{ id: 1, text: "Do the keys have any keychains or tags attached?", time: "11:22 AM", isUser: false }],
-    },
-    {
-      id: 4,
-      title: "Water Bottle",
-      date: "Feb 9",
-      preview: "Provide a description of the bottle.",
-      status: ["Resolved"],
-      messages: [{ id: 1, text: "Your item has been confirmed and marked as resolved.", time: "9:05 AM", isUser: false }],
-    },
-  ];
+  useEffect(() => {
+    api.get("/messages")
+      .then((data) => {
+        setConversations(data);
+        if (data.length > 0) setSelectedId(data[0].report_id);
+      })
+      .catch(console.error)
+      .finally(() => setLoadingConvos(false));
+  }, []);
 
-  const selectedConversation = useMemo(
-    () => conversations.find((c) => c.id === selectedConversationId) || conversations[0],
-    [selectedConversationId]
-  );
+  useEffect(() => {
+    if (!selectedId) return;
+    setLoadingMessages(true);
+    api.get(`/messages/${selectedId}`)
+      .then(setMessages)
+      .catch(console.error)
+      .finally(() => setLoadingMessages(false));
+  }, [selectedId]);
 
-  const handleSend = () => {
-    if (!message.trim()) return;
-    alert(`Message sent: ${message}`);
-    setMessage("");
-  };
+  useEffect(() => {
+    if (threadRef.current) threadRef.current.scrollTop = threadRef.current.scrollHeight;
+  }, [messages]);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+  const handleSend = async () => {
+    if (!message.trim() || !selectedId) return;
+    try {
+      const sent = await api.post(`/messages/${selectedId}`, { content: message.trim() });
+      setMessages((prev) => [...prev, sent]);
+      setMessage("");
+      // Update last_message in conversation list
+      setConversations((prev) =>
+        prev.map((c) => c.report_id === selectedId ? { ...c, last_message: sent.content } : c)
+      );
+    } catch (err) {
+      alert(err.message);
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  };
+
+  const formatTime = (iso) =>
+    iso ? new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) : "";
+
+  const selected = conversations.find((c) => c.report_id === selectedId);
+
   const badgeClass = (status) => {
-    if (status === "Pending") return "status-badge status-pending";
-    if (status === "Matched") return "status-badge status-matched";
+    if (status === "Pending")  return "status-badge status-pending";
+    if (status === "Matched")  return "status-badge status-matched";
     return "status-badge status-resolved";
   };
 
@@ -80,58 +79,69 @@ export default function StudentMessagesPage() {
               <h2 className="student-messages__left-title">Messages</h2>
             </div>
 
-            {conversations.map((conversation) => (
-              <button
-                key={conversation.id}
-                onClick={() => setSelectedConversationId(conversation.id)}
-                className={`student-messages__conversation${conversation.id === selectedConversationId ? " active" : ""}`}
-              >
-                <div className="student-messages__conversation-top">
-                  <strong>{conversation.title}</strong>
-                  <span>{conversation.date}</span>
-                </div>
-                <p>{conversation.preview}</p>
-              </button>
-            ))}
+            {loadingConvos ? (
+              <p style={{ padding: "20px", color: "var(--muted)", fontSize: 14 }}>Loading...</p>
+            ) : conversations.length === 0 ? (
+              <p style={{ padding: "20px", color: "var(--muted)", fontSize: 14 }}>No reports yet.</p>
+            ) : (
+              conversations.map((c) => (
+                <button key={c.report_id} onClick={() => setSelectedId(c.report_id)}
+                  className={`student-messages__conversation${c.report_id === selectedId ? " active" : ""}`}>
+                  <div className="student-messages__conversation-top">
+                    <strong>{c.item_name}</strong>
+                    <span className={badgeClass(c.status)}>{c.status}</span>
+                  </div>
+                  <p>{c.last_message || "No messages yet"}</p>
+                </button>
+              ))
+            )}
           </aside>
 
           <section className="student-card student-messages__right">
-            <div className="student-messages__header">
-              <span className="student-eyebrow">Case</span>
-              <h2 className="student-messages__title">{selectedConversation.title}</h2>
-              <div className="student-messages__badges">
-                {selectedConversation.status.map((status) => (
-                  <span key={status} className={badgeClass(status)}>{status}</span>
-                ))}
+            {!selected ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flex: 1, color: "var(--muted)" }}>
+                Select a report to view messages
               </div>
-            </div>
-
-            <div className="student-messages__thread">
-              {selectedConversation.messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`student-messages__message-wrap${msg.isUser ? " user" : " admin"}`}
-                >
-                  <div className={`student-messages__bubble${msg.isUser ? " user" : " admin"}`}>
-                    {msg.text}
+            ) : (
+              <>
+                <div className="student-messages__header">
+                  <span className="student-eyebrow">Case</span>
+                  <h2 className="student-messages__title">{selected.item_name}</h2>
+                  <div className="student-messages__badges">
+                    <span className={badgeClass(selected.status)}>{selected.status}</span>
                   </div>
-                  <div className="student-messages__time">{msg.time}</div>
                 </div>
-              ))}
-            </div>
 
-            <div className="student-messages__input-row">
-              <input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Type a message..."
-                className="student-input student-messages__input"
-              />
-              <button onClick={handleSend} className="student-lift-btn">
-                <span className="student-lift-btn__face">Send</span>
-              </button>
-            </div>
+                <div className="student-messages__thread" ref={threadRef}>
+                  {loadingMessages ? (
+                    <p style={{ color: "var(--muted)", fontSize: 14 }}>Loading messages...</p>
+                  ) : messages.length === 0 ? (
+                    <p style={{ color: "var(--muted)", fontSize: 14 }}>No messages yet. Send one below.</p>
+                  ) : (
+                    messages.map((msg) => {
+                      const isMe = msg.sender_id === user?.id || msg.sender_role === "student";
+                      return (
+                        <div key={msg.id} className={`student-messages__message-wrap${isMe ? " user" : " admin"}`}>
+                          <div className={`student-messages__bubble${isMe ? " user" : " admin"}`}>
+                            {msg.content}
+                          </div>
+                          <div className="student-messages__time">{formatTime(msg.created_at)}</div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <div className="student-messages__input-row">
+                  <input value={message} onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyDown} placeholder="Type a message..."
+                    className="student-input student-messages__input" />
+                  <button onClick={handleSend} className="student-lift-btn">
+                    <span className="student-lift-btn__face">Send</span>
+                  </button>
+                </div>
+              </>
+            )}
           </section>
         </div>
       </main>
