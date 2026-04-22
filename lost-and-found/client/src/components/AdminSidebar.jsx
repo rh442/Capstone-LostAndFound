@@ -1,10 +1,11 @@
   import { Link, useLocation, useNavigate } from "react-router-dom";
-  import logo from "../assets/logo.png";
+  import { useAuth } from "../context/AuthContext";
   import "./AdminSidebar.css";
 
   export default function AdminSidebar() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const links = [
       { label: "Dashboard", path: "/admin-dashboard" },
@@ -15,17 +16,15 @@
     ];
 
     const handleLogout = () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      logout();
       navigate("/login");
     };
 
     return (
       <aside className="admin-sidebar">
         <div>
-          <div className="admin-sidebar__brand">
-              <img src={logo} alt="admin-sidebar__logo" className="brand-logo-img" />
-              <span className="admin-sidebar__text">Lost & Found</span>
+          <div className="admin-sidebar__brand-wrapper">
+            <span className="admin-sidebar__text">Lost &amp; Found Portal</span>
           </div>
 
           <nav className="admin-sidebar__nav">

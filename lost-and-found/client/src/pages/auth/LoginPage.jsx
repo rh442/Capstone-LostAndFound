@@ -1,25 +1,28 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./LoginPage.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("student");
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (!email || !password) {
-      alert("Please enter email and password");
-      return;
-    }
-
-    if (role === "admin") {
-      navigate("/admin-dashboard");
-    } else {
-      navigate("/student-dashboard");
+    if (!email || !password) { setError("Please enter email and password"); return; }
+    setError("");
+    setLoading(true);
+    try {
+      const user = await login(email, password);
+      navigate(user.role === "admin" ? "/admin-dashboard" : "/student-dashboard");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,29 +47,11 @@ export default function LoginPage() {
 
       <main className="login-main">
         <div className="login-card">
-          <span className="auth-eyebrow">
-            {role === "admin" ? "Admin Portal" : "Student Portal"}
-          </span>
+          <span className="auth-eyebrow">Portal</span>
           <h1 className="login-title">Sign In</h1>
 
-          <div className="login-role-switch">
-            <button
-              type="button"
-              onClick={() => setRole("student")}
-              className={role === "student" ? "login-role-btn active" : "login-role-btn"}
-            >
-              Student
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole("admin")}
-              className={role === "admin" ? "login-role-btn active" : "login-role-btn"}
-            >
-              Admin
-            </button>
-          </div>
-
           <form onSubmit={handleLogin} className="login-form">
+            {error && <p className="auth-error">{error}</p>}
             <div>
               <label className="auth-label">Email</label>
               <input
@@ -89,8 +74,8 @@ export default function LoginPage() {
               />
             </div>
 
-            <button type="submit" className="auth-lift-btn auth-lift-btn--full">
-              <span className="auth-lift-btn__face">Sign In</span>
+            <button type="submit" disabled={loading} className="auth-lift-btn auth-lift-btn--full">
+              <span className="auth-lift-btn__face">{loading ? "Signing in..." : "Sign In"}</span>
             </button>
 
             <p className="auth-small-text">Forgot your password?</p>
