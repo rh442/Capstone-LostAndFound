@@ -631,6 +631,18 @@
   color: var(--accent);
 }
 
+.site-footer.home-site-footer .site-footer-disclaimer {
+  width: min(100%, 1400px);
+  margin: 14px auto 0;
+  padding: 12px clamp(20px, 4vw, 48px) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
 .home-to-top {
   position: fixed;
   left: 50%;

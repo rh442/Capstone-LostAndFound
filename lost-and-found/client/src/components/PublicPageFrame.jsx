@@ -176,6 +176,11 @@ export default function PublicPageFrame({ active = "home", children }) {
           </div>
           <span>© 2026 Lost &amp; Found</span>
         </div>
+        <p className="site-footer-disclaimer">
+          This is a student capstone project and is not affiliated with,
+          endorsed by, or sponsored by Hunter College or The City University
+          of New York.
+        </p>
       </footer>
 
       <button
