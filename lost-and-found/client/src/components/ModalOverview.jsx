@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './ModalOverview.css';
-import { api } from '../lib/api';
+import { api, SERVER_BASE } from '../lib/api';
 import ItemCell from './ItemCell';
 
 export default function ModalOverview({ isOpen, onClose, report, onMatch }) {
@@ -49,8 +49,23 @@ export default function ModalOverview({ isOpen, onClose, report, onMatch }) {
     }
   };
 
+  const handleResolve = async () => {
+    if (!report || busy) return;
+    setBusy(true);
+    try {
+      const updated = await api.patch(`/reports/${report.id}/resolve`, {});
+      onMatch(updated);
+      const items = await api.get('/found-items');
+      setFoundItems(items);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const formatDate = (iso) =>
-    iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+    iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '—';
 
   const statusClass = (status) => {
     if (status === 'Pending') return 'status-badge status-pending';
@@ -83,6 +98,14 @@ export default function ModalOverview({ isOpen, onClose, report, onMatch }) {
               <span className={statusClass(report.status)} style={{ marginTop: 12, display: 'inline-block' }}>
                 {report.status}
               </span>
+              {report.status === 'Matched' && (
+                <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                  <p style={{ fontSize: 13, color: 'var(--muted)', margin: 0 }}>Student already picked up?</p>
+                  <button type='button' className="admin-lift-btn" disabled={busy} onClick={handleResolve}>
+                    <span className="admin-lift-btn__face">{busy ? 'Saving...' : 'Resolved'}</span>
+                  </button>
+                </div>
+              )}
               {report.student_name && (
                 <p style={{ fontSize: 13, marginTop: 12, color: 'var(--muted)' }}>
                   Student: {report.student_name}
@@ -119,7 +142,7 @@ export default function ModalOverview({ isOpen, onClose, report, onMatch }) {
                       <tr className='item-set' key={item.id}>
                         <td>
                           {item.image_url
-                            ? <img src={`http://localhost:4000${item.image_url}`} alt={item.item_name} />
+                            ? <img src={item.image_url.startsWith('http') ? item.image_url : `${SERVER_BASE}${item.image_url}`} alt={item.item_name} />
                             : <span style={{ fontSize: 12, color: 'var(--muted)' }}>—</span>
                           }
                         </td>
@@ -141,11 +164,13 @@ export default function ModalOverview({ isOpen, onClose, report, onMatch }) {
           </div>
         ) : (
           <div className='MatchedItem'>
-            <div className="button-container">
-              <button type='button' disabled={busy} onClick={handleClearMatch}>
-                {busy ? 'Clearing...' : 'Clear Match'}
-              </button>
-            </div>
+            {report.status !== 'Resolved' && (
+              <div className="button-container">
+                <button type='button' disabled={busy} onClick={handleClearMatch}>
+                  {busy ? 'Clearing...' : 'Clear Match'}
+                </button>
+              </div>
+            )}
             {matchedItem && (
               <div className="Item-container">
                 <ItemCell
