@@ -3,7 +3,24 @@ import StudentSidebar from "../../components/StudentSidebar";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
 import { connectSocket } from "../../lib/socket";
+import hawkAiUrl from "../../assets/hawk.svg";
 import "./StudentMessagesPage.css";
+
+const HAWK_AI_ID = "hawk-ai";
+
+function HawkAvatar({ size = 36 }) {
+  return (
+    <div className="hawk-avatar" style={{ width: size, height: size }}>
+      <img src={hawkAiUrl} alt="Hawk AI" />
+    </div>
+  );
+}
+
+const HAWK_WELCOME = {
+  role: "assistant",
+  content:
+    "👋 Hi! I'm Hawk AI. Tell me what you lost — I'll search the database before you contact admin. Try: \"I lost a black backpack near the library\".",
+};
 
 export default function StudentMessagesPage() {
   const { user } = useAuth();
@@ -13,7 +30,12 @@ export default function StudentMessagesPage() {
   const [message, setMessage]                   = useState("");
   const [loadingConvos, setLoadingConvos]        = useState(true);
   const [loadingMessages, setLoadingMessages]    = useState(false);
+  const [hawkMessages, setHawkMessages]         = useState([HAWK_WELCOME]);
+  const [hawkInput, setHawkInput]               = useState("");
+  const [hawkLoading, setHawkLoading]           = useState(false);
   const threadRef = useRef(null);
+
+  const isHawkAI = selectedId === HAWK_AI_ID;
 
   useEffect(() => {
     api.get("/messages")
@@ -36,7 +58,7 @@ export default function StudentMessagesPage() {
 
   useEffect(() => {
     if (threadRef.current) threadRef.current.scrollTop = threadRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, hawkMessages]);
 
   useEffect(() => {
     const sock = connectSocket();
@@ -65,6 +87,7 @@ export default function StudentMessagesPage() {
       const sent = await api.post(`/messages/${selectedId}`, { content: message.trim() });
       setMessages((prev) => prev.some((m) => m.id === sent.id) ? prev : [...prev, sent]);
       setMessage("");
+      // Update last_message in conversation list
       setConversations((prev) =>
         prev.map((c) => c.report_id === selectedId ? { ...c, last_message: sent.content } : c)
       );
@@ -75,6 +98,28 @@ export default function StudentMessagesPage() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  };
+
+  const handleSendHawk = async () => {
+    if (!hawkInput.trim() || hawkLoading) return;
+    const userMsg = { role: "user", content: hawkInput.trim() };
+    const next = [...hawkMessages, userMsg];
+    setHawkMessages(next);
+    setHawkInput("");
+    setHawkLoading(true);
+    try {
+      const apiMessages = next.filter((m) => m !== HAWK_WELCOME).map((m) => ({ role: m.role, content: m.content }));
+      const res = await api.post("/chat", { messages: apiMessages });
+      setHawkMessages([...next, { role: "assistant", content: res.message }]);
+    } catch (err) {
+      setHawkMessages([...next, { role: "assistant", content: `Sorry, I hit an error: ${err.message}` }]);
+    } finally {
+      setHawkLoading(false);
+    }
+  };
+
+  const handleHawkKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSendHawk(); }
   };
 
   const formatTime = (iso) =>
@@ -100,6 +145,18 @@ export default function StudentMessagesPage() {
               <h2 className="student-messages__left-title">Messages</h2>
             </div>
 
+            <button
+              type="button"
+              onClick={() => setSelectedId(HAWK_AI_ID)}
+              className={`hawk-ai-conversation${isHawkAI ? " active" : ""}`}
+            >
+              <HawkAvatar size={42} />
+              <div className="hawk-ai-conversation__text">
+                <strong>Ask Hawk AI</strong>
+                <p>Search lost items instantly</p>
+              </div>
+            </button>
+
             {loadingConvos ? (
               <p style={{ padding: "20px", color: "var(--muted)", fontSize: 14 }}>Loading...</p>
             ) : conversations.length === 0 ? (
@@ -119,7 +176,57 @@ export default function StudentMessagesPage() {
           </aside>
 
           <section className="student-card student-messages__right">
-            {!selected ? (
+            {isHawkAI ? (
+              <>
+                <div className="hawk-ai-header">
+                  <HawkAvatar size={44} />
+                  <div>
+                    <h2 className="hawk-ai-header__title">Hawk AI</h2>
+                    <p className="hawk-ai-header__subtitle">AI assistant • Searches the lost &amp; found database</p>
+                  </div>
+                </div>
+
+                <div className="student-messages__thread" ref={threadRef}>
+                  {hawkMessages.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`student-messages__message-wrap${msg.role === "user" ? " user" : " admin"}`}
+                    >
+                      <div
+                        className={`student-messages__bubble${msg.role === "user" ? " user" : " hawk"}`}
+                      >
+                        {msg.content}
+                      </div>
+                    </div>
+                  ))}
+                  {hawkLoading && (
+                    <div className="student-messages__message-wrap admin">
+                      <div className="student-messages__bubble hawk hawk-typing">
+                        <span></span><span></span><span></span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="student-messages__input-row">
+                  <input
+                    value={hawkInput}
+                    onChange={(e) => setHawkInput(e.target.value)}
+                    onKeyDown={handleHawkKeyDown}
+                    placeholder="Describe what you lost..."
+                    disabled={hawkLoading}
+                    className="student-input student-messages__input"
+                  />
+                  <button
+                    onClick={handleSendHawk}
+                    disabled={hawkLoading || !hawkInput.trim()}
+                    className="student-lift-btn"
+                  >
+                    <span className="student-lift-btn__face">Send</span>
+                  </button>
+                </div>
+              </>
+            ) : !selected ? (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flex: 1, color: "var(--muted)" }}>
                 Select a report to view messages
               </div>
