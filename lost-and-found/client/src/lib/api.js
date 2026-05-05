@@ -1,4 +1,5 @@
 const BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api';
+export const SERVER_BASE = BASE.replace(/\/api\/?$/, '');
 
 async function parseResponse(res) {
   const contentType = res.headers.get('content-type') || '';
@@ -32,7 +33,6 @@ async function request(path, options = {}) {
   return data;
 }
 
-// For multipart/form-data (file uploads) — let browser set Content-Type with boundary
 async function requestForm(path, formData) {
   const token = localStorage.getItem('token');
   let res;

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import StudentSidebar from "../../components/StudentSidebar";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
+import { connectSocket } from "../../lib/socket";
 import "./StudentMessagesPage.css";
 
 export default function StudentMessagesPage() {
@@ -37,13 +38,33 @@ export default function StudentMessagesPage() {
     if (threadRef.current) threadRef.current.scrollTop = threadRef.current.scrollHeight;
   }, [messages]);
 
+  useEffect(() => {
+    const sock = connectSocket();
+    if (!sock) return;
+
+    const onNewMessage = (msg) => {
+      if (msg.report_id === selectedId) {
+        setMessages((prev) => prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]);
+      }
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.report_id === msg.report_id
+            ? { ...c, last_message: msg.content, last_message_at: msg.created_at }
+            : c
+        )
+      );
+    };
+
+    sock.on("message:new", onNewMessage);
+    return () => { sock.off("message:new", onNewMessage); };
+  }, [selectedId]);
+
   const handleSend = async () => {
     if (!message.trim() || !selectedId) return;
     try {
       const sent = await api.post(`/messages/${selectedId}`, { content: message.trim() });
-      setMessages((prev) => [...prev, sent]);
+      setMessages((prev) => prev.some((m) => m.id === sent.id) ? prev : [...prev, sent]);
       setMessage("");
-      // Update last_message in conversation list
       setConversations((prev) =>
         prev.map((c) => c.report_id === selectedId ? { ...c, last_message: sent.content } : c)
       );

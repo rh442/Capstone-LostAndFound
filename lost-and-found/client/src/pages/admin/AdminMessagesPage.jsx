@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import AdminSidebar from "../../components/AdminSidebar";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
+import { connectSocket } from "../../lib/socket";
 import "./AdminMessagesPage.css";
 
 export default function AdminMessagesPage() {
@@ -20,7 +21,6 @@ export default function AdminMessagesPage() {
     api.get("/messages")
       .then((data) => {
         setConversations(data);
-        // Deep-link from ?reportId or fall back to first conversation
         const paramId = searchParams.get("reportId");
         if (paramId) {
           setSelectedId(Number(paramId));
@@ -45,11 +45,32 @@ export default function AdminMessagesPage() {
     if (threadRef.current) threadRef.current.scrollTop = threadRef.current.scrollHeight;
   }, [messages]);
 
+  useEffect(() => {
+    const sock = connectSocket();
+    if (!sock) return;
+
+    const onNewMessage = (msg) => {
+      if (msg.report_id === selectedId) {
+        setMessages((prev) => prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]);
+      }
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.report_id === msg.report_id
+            ? { ...c, last_message: msg.content, last_message_at: msg.created_at }
+            : c
+        )
+      );
+    };
+
+    sock.on("message:new", onNewMessage);
+    return () => { sock.off("message:new", onNewMessage); };
+  }, [selectedId]);
+
   const handleSend = async () => {
     if (!message.trim() || !selectedId) return;
     try {
       const sent = await api.post(`/messages/${selectedId}`, { content: message.trim() });
-      setMessages((prev) => [...prev, sent]);
+      setMessages((prev) => prev.some((m) => m.id === sent.id) ? prev : [...prev, sent]);
       setMessage("");
       setConversations((prev) =>
         prev.map((c) => c.report_id === selectedId ? { ...c, last_message: sent.content } : c)

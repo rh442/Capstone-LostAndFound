@@ -50,7 +50,7 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/reports/:id — get single report (student owns it or admin)
+// GET /api/reports/:id
 router.get('/:id', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -75,7 +75,7 @@ router.get('/:id', requireAuth, async (req, res) => {
   }
 });
 
-// PATCH /api/reports/:id/match — admin matches a report to a found item
+// PATCH /api/reports/:id/match
 router.patch('/:id/match', requireAdmin, async (req, res) => {
   const { found_item_id } = req.body;
 
@@ -110,7 +110,7 @@ router.patch('/:id/match', requireAdmin, async (req, res) => {
   }
 });
 
-// PATCH /api/reports/:id/unmatch — admin clears a match
+// PATCH /api/reports/:id/unmatch
 router.patch('/:id/unmatch', requireAdmin, async (req, res) => {
   const client = await pool.connect();
   try {
@@ -158,9 +158,14 @@ router.patch('/:id/resolve', requireAdmin, async (req, res) => {
     await client.query('BEGIN');
 
     const reportResult = await client.query(
-      `UPDATE lost_reports SET status = 'Resolved' WHERE id = $1 RETURNING matched_item_id`,
+      `UPDATE lost_reports SET status = 'Resolved' WHERE id = $1 RETURNING *`,
       [req.params.id]
     );
+
+    if (reportResult.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'Report not found' });
+    }
 
     const { matched_item_id } = reportResult.rows[0];
     if (matched_item_id) {
@@ -171,7 +176,7 @@ router.patch('/:id/resolve', requireAdmin, async (req, res) => {
     }
 
     await client.query('COMMIT');
-    res.json({ message: 'Report resolved' });
+    res.json(reportResult.rows[0]);
   } catch (err) {
     await client.query('ROLLBACK');
     console.error(err);
