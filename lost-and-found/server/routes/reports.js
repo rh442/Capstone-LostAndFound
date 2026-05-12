@@ -50,7 +50,7 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/reports/:id
+// GET /api/reports/:id — get single report (student owns it or admin)
 router.get('/:id', requireAuth, async (req, res) => {
   try {
     const result = await pool.query(
@@ -75,7 +75,7 @@ router.get('/:id', requireAuth, async (req, res) => {
   }
 });
 
-// PATCH /api/reports/:id/match
+// PATCH /api/reports/:id/match — admin matches a report to a found item
 router.patch('/:id/match', requireAdmin, async (req, res) => {
   const { found_item_id } = req.body;
 
@@ -110,7 +110,7 @@ router.patch('/:id/match', requireAdmin, async (req, res) => {
   }
 });
 
-// PATCH /api/reports/:id/unmatch
+// PATCH /api/reports/:id/unmatch — admin clears a match
 router.patch('/:id/unmatch', requireAdmin, async (req, res) => {
   const client = await pool.connect();
   try {

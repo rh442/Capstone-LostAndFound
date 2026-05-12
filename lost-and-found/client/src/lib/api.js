@@ -33,6 +33,7 @@ async function request(path, options = {}) {
   return data;
 }
 
+// For multipart/form-data (file uploads) — let browser set Content-Type with boundary
 async function requestForm(path, formData) {
   const token = localStorage.getItem('token');
   let res;
