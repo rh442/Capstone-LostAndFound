@@ -9,6 +9,7 @@ router.get('/', requireAuth, async (req, res) => {
   try {
     let result;
     if (req.user.role === 'admin') {
+      // All reports so admin can initiate chats on any of them
       result = await pool.query(
         `SELECT lr.id AS report_id, lr.item_name, lr.status,
                 p.full_name AS student_name, p.email AS student_email,
@@ -22,6 +23,7 @@ router.get('/', requireAuth, async (req, res) => {
          ) DESC`
       );
     } else {
+      // Show all student reports so they can start conversations with admin
       result = await pool.query(
         `SELECT lr.id AS report_id, lr.item_name, lr.status,
                 (SELECT content FROM messages WHERE report_id = lr.id ORDER BY created_at DESC LIMIT 1) AS last_message,
@@ -45,6 +47,7 @@ router.get('/', requireAuth, async (req, res) => {
 // GET /api/messages/:reportId — get all messages for a report
 router.get('/:reportId', requireAuth, async (req, res) => {
   try {
+    // Verify access: student must own the report
     if (req.user.role !== 'admin') {
       const report = await pool.query(
         'SELECT student_id FROM lost_reports WHERE id = $1',

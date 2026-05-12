@@ -21,6 +21,7 @@ export default function AdminMessagesPage() {
     api.get("/messages")
       .then((data) => {
         setConversations(data);
+        // Deep-link from ?reportId or fall back to first conversation
         const paramId = searchParams.get("reportId");
         if (paramId) {
           setSelectedId(Number(paramId));
