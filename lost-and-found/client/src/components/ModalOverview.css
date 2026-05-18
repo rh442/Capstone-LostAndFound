@@ -81,6 +81,8 @@
   gap: 8px;
   background: #fafafa;
   text-align: center;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .report h2 {
@@ -188,4 +190,181 @@ td img {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.claim-panel {
+  margin-top: 16px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-left: 3px solid var(--accent, #7a5cff);
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.claim-panel h2 {
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+.claim-panel__subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.claim-panel__fields {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.claim-panel__fields li {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.claim-panel__fields li span {
+  display: inline-block;
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.claim-panel__rejected {
+  font-size: 12px;
+  color: #b91c1c;
+  margin: 8px 0 0;
+}
+
+.claim-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.claim-panel__actions button {
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: "Work Sans", Arial, sans-serif;
+  background: #fff;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.claim-panel__actions button:hover {
+  background: #f5f5f5;
+}
+
+.claim-panel__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.claim-panel__actions .claim-panel__danger {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.claim-panel__actions .claim-panel__danger:hover {
+  background: #fef2f2;
+}
+
+/* ── Mobile breakpoint (≤768px) ── */
+@media (max-width: 768px) {
+  .modal {
+    width: 94%;
+    max-height: 92vh;
+  }
+
+  .modal.active {
+    padding: 22px 14px 18px;
+    overflow-y: auto;
+  }
+
+  .modal h1 {
+    font-size: 18px;
+    margin: 0 0 14px;
+  }
+
+  .modal-close {
+    top: 8px;
+    right: 10px;
+    font-size: 24px;
+    padding: 4px 8px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  /* Stack the two columns vertically */
+  .innerModal {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .innerModal > div {
+    overflow: visible;
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .report {
+    height: auto;
+    padding: 16px 14px;
+  }
+
+  .list_container {
+    padding: 14px 10px;
+  }
+
+  /* Items table: drop image col, compact spacing, allow wrapping */
+  .list_container table {
+    table-layout: auto;
+  }
+
+  .list_container th,
+  .list_container td {
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+
+  .list_container td img {
+    width: 40px;
+  }
+
+  /* Hide "Storage" column on narrow phones — only admin needs it and they can view it on the dashboard */
+  .list_container th:nth-child(5),
+  .list_container td:nth-child(5) {
+    display: none;
+  }
+
+  .MatchedItem {
+    padding: 12px;
+  }
+
+  .claim-panel__actions {
+    gap: 6px;
+  }
+
+  .claim-panel__actions button {
+    flex: 1 1 auto;
+    min-height: 36px;
+    font-size: 12px;
+  }
 }

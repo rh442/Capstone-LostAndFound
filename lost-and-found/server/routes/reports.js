@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { generateTicket } = require('../utils/ticket');
 
 const router = express.Router();
 
@@ -36,14 +37,48 @@ router.post('/', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Item name is required' });
   }
 
+  const MAX_ATTEMPTS = 5;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      const ticket = generateTicket();
+      const result = await pool.query(
+        `INSERT INTO lost_reports
+           (ticket_number, student_id, item_name, category, location_lost, date_lost, description, image_url)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         RETURNING *`,
+        [ticket, req.user.id, item_name, category, location_lost, date_lost, description, image_url]
+      );
+
+      const io = req.app.get('io');
+      if (io) {
+        io.to('admin').emit('report:new', {
+          id: result.rows[0].id,
+          ticket_number: result.rows[0].ticket_number,
+          item_name: result.rows[0].item_name,
+        });
+      }
+
+      return res.status(201).json(result.rows[0]);
+    } catch (err) {
+      if (err.code === '23505' && err.constraint && err.constraint.includes('ticket_number')) {
+        continue; // collision — try a new ticket
+      }
+      console.error(err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  res.status(500).json({ error: 'Could not generate a unique ticket. Please try again.' });
+});
+
+// GET /api/reports/unviewed-count — admin: how many lost_reports the admin hasn't opened yet.
+// Declared BEFORE the `:id` route so Express doesn't treat "unviewed-count" as an id.
+router.get('/unviewed-count', requireAdmin, async (req, res) => {
   try {
-    const result = await pool.query(
-      `INSERT INTO lost_reports (student_id, item_name, category, location_lost, date_lost, description, image_url)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING *`,
-      [req.user.id, item_name, category, location_lost, date_lost, description, image_url]
+    const { rows } = await pool.query(
+      'SELECT COUNT(*)::int AS count FROM lost_reports WHERE viewed_by_admin = false'
     );
-    res.status(201).json(result.rows[0]);
+    res.json({ count: rows[0].count });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -148,6 +183,24 @@ router.patch('/:id/unmatch', requireAdmin, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   } finally {
     client.release();
+  }
+});
+
+// PATCH /api/reports/:id/viewed — admin marks a single report as viewed.
+// Idempotent: no-op if already viewed.
+router.patch('/:id/viewed', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `UPDATE lost_reports SET viewed_by_admin = true
+        WHERE id = $1
+        RETURNING id, viewed_by_admin`,
+      [req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Report not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
