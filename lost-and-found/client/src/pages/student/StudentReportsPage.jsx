@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import StudentSidebar from "../../components/StudentSidebar";
 import { api } from "../../lib/api";
 import "./StudentReportsPage.css";
@@ -27,7 +28,8 @@ export default function StudentReportsPage() {
       const matchesSearch =
         r.item_name.toLowerCase().includes(q) ||
         (r.category || "").toLowerCase().includes(q) ||
-        r.status.toLowerCase().includes(q);
+        r.status.toLowerCase().includes(q) ||
+        (r.ticket_number || "").toLowerCase().includes(q);
       return matchesFilter && matchesSearch;
     });
   }, [reports, activeFilter, searchTerm]);
@@ -71,10 +73,12 @@ export default function StudentReportsPage() {
               <table className="student-table">
                 <thead>
                   <tr>
+                    <th>Ticket</th>
                     <th>Item</th>
                     <th>Category</th>
                     <th>Date Submitted</th>
                     <th>Status</th>
+                    <th>Chat</th>
                     <th>Details</th>
                   </tr>
                 </thead>
@@ -82,10 +86,16 @@ export default function StudentReportsPage() {
                   {filteredReports.length > 0 ? (
                     filteredReports.map((report) => (
                       <tr key={report.id}>
+                        <td data-label="Ticket"><span className="ticket-tag">{report.ticket_number || "—"}</span></td>
                         <td data-label="Item">{report.item_name}</td>
                         <td data-label="Category">{report.category || "—"}</td>
                         <td data-label="Date">{formatDate(report.created_at)}</td>
                         <td data-label="Status"><span className={statusClass(report.status)}>{report.status}</span></td>
+                        <td data-label="Chat">
+                          <Link to={`/student-messages?reportId=${report.id}`} className="student-lift-btn student-lift-btn--ghost">
+                            <span className="student-lift-btn__face">Chat</span>
+                          </Link>
+                        </td>
                         <td data-label="Details">
                           <button className="student-lift-btn" onClick={() => setSelected(report)}>
                             <span className="student-lift-btn__face">View</span>
@@ -95,7 +105,7 @@ export default function StudentReportsPage() {
                     ))
                   ) : (
                     <tr>
-                      <td className="student-reports__empty" colSpan="5">No reports found.</td>
+                      <td className="student-reports__empty" colSpan="7">No reports found.</td>
                     </tr>
                   )}
                 </tbody>
@@ -112,6 +122,9 @@ export default function StudentReportsPage() {
             <button className="sr-modal__close" onClick={() => setSelected(null)}>✕</button>
             <span className="sr-modal__heading">Report Details</span>
             <div className="sr-modal__panel">
+              {selected.ticket_number && (
+                <span className="ticket-tag" style={{ marginBottom: 8, display: "inline-block" }}>{selected.ticket_number}</span>
+              )}
               <h2 className="sr-modal__item-name">{selected.item_name}</h2>
               <span className={statusClass(selected.status)} style={{ marginBottom: 16, display: "inline-block" }}>
                 {selected.status}
