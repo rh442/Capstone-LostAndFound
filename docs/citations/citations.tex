@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{url}
+
+\title{Capstone --- Lost and Found\\\large Citations}
+\author{Jason Shan \and Mustafa Kurt \and Raymond Huang}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{External contributions}
+
+This document lists external contributions that influenced the
+\emph{Capstone --- Lost and Found} project, including external APIs,
+AI tools used during development, and assets sourced from the web.
+Packages declared in dependency files (e.g.\ \texttt{package.json}) are
+not individually cited here, in line with the project requirements.
+
+\subsection*{External APIs and SDKs}
+
+The application integrates the Anthropic Messages
+API~\cite{anthropic_api} to power the in-app Hawk~AI chatbot,
+Supabase~\cite{supabase} for database and file storage, and
+Socket.IO~\cite{socketio} for real-time student--admin messaging.
+The user interface uses the \emph{Work Sans} and \emph{Oswald}
+typefaces from Google Fonts~\cite{googlefonts}.
+
+\subsection*{Hosting platforms}
+
+The React/Vite frontend is hosted on Vercel~\cite{vercel}, and the
+Node/Express backend (REST API and Socket.IO server) is hosted on
+Render~\cite{render}.
+
+\subsection*{AI tools used during development}
+
+Per the project requirements, the Claude model that powers the in-app
+chatbot~\cite{ai_claude_chatbot} is cited separately from the Claude
+instance used as a development assistant~\cite{ai_claude_assistant}.
+In addition, the team used ChatGPT~\cite{ai_chatgpt} and the
+Cursor~\cite{ai_cursor} AI-assisted code editor during development for
+questions, debugging help, and code suggestions.
+
+\subsection*{Design inspiration}
+
+The visual layout, color palette, and overall page structure of the
+Lost-and-Found web application were modeled after the official Hunter
+College website~\cite{hunter_college_site} so that the application
+would feel consistent with the school's existing web presence. No
+code was copied; only the visual design language was referenced.
+
+\subsection*{Assets}
+
+Campus photographs and mock lost-item images shipped under
+\texttt{client/src/assets/} were sourced via Google Image Search to
+simulate realistic lost-and-found scenarios for demonstration
+purposes~\cite{assets_images}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

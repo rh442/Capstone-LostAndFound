@@ -1,0 +1,139 @@
+% ==========================================================================
+%  Capstone — Lost and Found
+%  Bibliography of external contributions used in the project.
+% ==========================================================================
+
+% --------------------------------------------------------------------------
+%  External APIs / SDKs integrated into the application
+% --------------------------------------------------------------------------
+
+@misc{anthropic_api,
+  author       = {{Anthropic}},
+  title        = {Anthropic Messages API (\texttt{@anthropic-ai/sdk}, model \texttt{claude-haiku-4-5})},
+  year         = {2026},
+  howpublished = {\url{https://docs.anthropic.com/}},
+  note         = {Used by the Hawk AI chatbot in \texttt{server/routes/chat.js}
+                  to converse with students and extract structured lost-item details.}
+}
+
+@misc{supabase,
+  author       = {{Supabase}},
+  title        = {Supabase JavaScript Client (\texttt{@supabase/supabase-js})},
+  year         = {2026},
+  howpublished = {\url{https://supabase.com/}},
+  note         = {Database and file storage backend.}
+}
+
+@misc{socketio,
+  author       = {Rauch, Guillermo and {Socket.IO contributors}},
+  title        = {Socket.IO --- Real-time, bidirectional, event-based communication},
+  year         = {2026},
+  howpublished = {\url{https://socket.io/}},
+  note         = {Used for real-time student-admin messaging
+                  (\texttt{socket.io} on the server, \texttt{socket.io-client} on the React client).}
+}
+
+@misc{vercel,
+  author       = {{Vercel}},
+  title        = {Vercel --- Frontend hosting platform},
+  year         = {2026},
+  howpublished = {\url{https://vercel.com/}},
+  note         = {Hosts the React/Vite client at
+                  \url{https://capstone-project-delta-six.vercel.app/}.}
+}
+
+@misc{render,
+  author       = {{Render}},
+  title        = {Render --- Backend hosting platform},
+  year         = {2026},
+  howpublished = {\url{https://render.com/}},
+  note         = {Hosts the Node/Express backend (API and Socket.IO server).}
+}
+
+@misc{googlefonts,
+  author       = {{Google}},
+  title        = {Google Fonts --- \emph{Work Sans} and \emph{Oswald} typefaces},
+  year         = {2026},
+  howpublished = {\url{https://fonts.google.com/}},
+  note         = {Imported via \texttt{@import} in component stylesheets
+                  (e.g.\ \texttt{AdminSidebar.css}, \texttt{StudentSidebar.css}).}
+}
+
+% --------------------------------------------------------------------------
+%  AI tools used during development
+%  (The Claude instance used to build the in-app chatbot is cited separately
+%   from the Claude instance used as a development assistant, per the
+%   project requirements.)
+% --------------------------------------------------------------------------
+
+@misc{ai_claude_chatbot,
+  author       = {{Anthropic}},
+  title        = {Claude (\texttt{claude-haiku-4-5}) --- in-app Hawk AI chatbot},
+  year         = {2026},
+  howpublished = {\url{https://www.anthropic.com/claude}},
+  note         = {The Claude model invoked at runtime through the Anthropic API
+                  to power the Hawk AI assistant that converses with students.
+                  Cited separately from the Claude instance used as a
+                  development assistant.}
+}
+
+@misc{ai_claude_assistant,
+  author       = {{Anthropic}},
+  title        = {Claude --- conversational AI development assistant},
+  year         = {2025--2026},
+  howpublished = {\url{https://claude.ai/}},
+  note         = {Used during development to answer design questions, debug
+                  issues, and clarify concepts. Distinct from the Claude
+                  model that powers the in-app chatbot.}
+}
+
+@misc{ai_chatgpt,
+  author       = {{OpenAI}},
+  title        = {ChatGPT --- conversational AI development assistant},
+  year         = {2025--2026},
+  howpublished = {\url{https://chat.openai.com/}},
+  note         = {Used during development for questions, debugging, and
+                  explanation of concepts.}
+}
+
+@misc{ai_cursor,
+  author       = {{Anysphere}},
+  title        = {Cursor --- AI-assisted code editor},
+  year         = {2025--2026},
+  howpublished = {\url{https://cursor.com/}},
+  note         = {Used during development for in-editor AI assistance and
+                  code generation.}
+}
+
+% --------------------------------------------------------------------------
+%  Assets
+% --------------------------------------------------------------------------
+
+@misc{hunter_college_site,
+  author       = {{Hunter College, CUNY}},
+  title        = {Hunter College official website},
+  year         = {2026},
+  howpublished = {\url{https://hunter.cuny.edu/}},
+  note         = {The visual layout, color palette, and overall page structure
+                  of the Lost-and-Found web app were modeled after the official
+                  Hunter College website so that the application would feel
+                  consistent with the school's existing web presence.
+                  No code was copied; only the visual design language was
+                  referenced.}
+}
+
+@misc{assets_images,
+  author       = {{Various}},
+  title        = {Mock campus and lost-item images},
+  year         = {2026},
+  howpublished = {Google Image Search},
+  note         = {Images in \texttt{client/src/assets/} and
+                  \texttt{client/src/assets/public/}
+                  (e.g.\ \texttt{academic-campus.jpg}, \texttt{hero-students.jpg},
+                  \texttt{black\_backpack.webp}, \texttt{Bottle.webp},
+                  \texttt{Charger.jpg}, \texttt{ID.jpg}, \texttt{Keys.webp},
+                  \texttt{hawk.svg}) were sourced via Google Image Search to
+                  simulate mock lost-and-found scenarios for demonstration
+                  purposes. No commercial use is intended; rights remain with
+                  the original creators.}
+}
