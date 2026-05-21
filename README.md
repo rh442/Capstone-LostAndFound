@@ -193,26 +193,18 @@ feels consistent with the school's existing web presence (see
 
 ## C4 architecture diagrams
 
-The C4 model for the system is written in
-[Structurizr DSL](https://docs.structurizr.com/dsl) at
+*C4 diagram images will be added here.*
+
+<!-- TODO: drop PNGs into docs/architecture/ and embed them, e.g.
+
+![Context diagram](./docs/architecture/c4-context.png)
+![Container diagram](./docs/architecture/c4-container.png)
+![Component diagram](./docs/architecture/c4-component.png)
+
+-->
+
+The C4 model source is also available as Structurizr DSL at
 [`docs/architecture/workspace.dsl`](./docs/architecture/workspace.dsl).
-
-### View the diagrams
-
-**Option A — Structurizr Lite (recommended):**
-
-```bash
-docker run -it --rm -p 8080:8080 \
-  -v "$(pwd)/docs/architecture:/usr/local/structurizr" \
-  structurizr/lite
-```
-
-Then open <http://localhost:8080> to browse the Context, Container,
-Component, and Dynamic views.
-
-**Option B — Online DSL editor:**
-Paste the contents of `workspace.dsl` into
-<https://structurizr.com/dsl> to render the diagrams in the browser.
 
 ---
 
