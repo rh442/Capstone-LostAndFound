@@ -29,4 +29,5 @@ When Students post a request, the admin(s) would be able look through alist to s
 |<a href='https://cuny620-my.sharepoint.com/:p:/g/personal/raymond_huang70_myhunter_cuny_edu/IQDw7pkbj-19TJYokc02zUmrAWB7ZWY1GgAvDkh_Wu9f1Fs?e=qo6Xm9'>5</a>|Auth + Admin Updates + UI Updates|
 |<a href='https://cuny620-my.sharepoint.com/:p:/g/personal/raymond_huang70_myhunter_cuny_edu/IQB2FTmKT_Z9S4-BuZOTTqmMAX9yFRxare-1si0trleuKRg?e=XHCFm6'>6</a>|Account Creation + Login + More UI updates|
 |<a href='https://cuny907-my.sharepoint.com/:p:/g/personal/raymond_huang70_login_cuny_edu/IQAP4Wz12DUDSLJ2LmtQf25EAY095sY4Fw1yLsf2F0Oyu-g?e=A6kFKr'>7</a>|Backend + Database|
-|<a href='https://cuny907-my.sharepoint.com/:p:/g/personal/raymond_huang70_login_cuny_edu/IQCsvTYL9ICWQ6IBepEZO_CJAU0UsLIyirK49bMqHfiSu2w?e=2mqM4x'>8</a>|Hosting + Mock Data
+|<a href='https://cuny907-my.sharepoint.com/:p:/g/personal/raymond_huang70_login_cuny_edu/IQCsvTYL9ICWQ6IBepEZO_CJAU0UsLIyirK49bMqHfiSu2w?e=2mqM4x'>8</a>|Hosting + Mock Data|
+|<a href='https://cuny907-my.sharepoint.com/:p:/g/personal/raymond_huang70_login_cuny_edu/IQDKj5MAqeeaSpp2T8Qr5jBmAfBlahOBwIHYkE5ntniKiJU?e=xZkde3'>9</a>|C4 Diagram|
