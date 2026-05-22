@@ -194,15 +194,17 @@ feels consistent with the school's existing web presence (see
 
 ## C4 architecture diagrams
 
-*C4 diagram images will be added here.*
-
-<!-- TODO: drop PNGs into docs/architecture/ and embed them, e.g.
+### Context diagram
 
 ![Context diagram](./docs/architecture/c4-context.png)
-![Container diagram](./docs/architecture/c4-container.png)
-![Component diagram](./docs/architecture/c4-component.png)
 
--->
+### Container diagram
+
+![Container diagram](./docs/architecture/c4-container.png)
+
+### Component diagram
+
+![Component diagram](./docs/architecture/c4-component.png)
 
 The C4 model source is also available as Structurizr DSL at
 [`docs/architecture/workspace.dsl`](./docs/architecture/workspace.dsl).
